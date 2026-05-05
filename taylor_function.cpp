@@ -13,27 +13,29 @@ TaylorFunction::~TaylorFunction() {}
 // Static метод - общий для всех экземпляров
 double TaylorFunction::factorial(unsigned n) {
     // Кэш хранится точно в целочисленном типе
-    static unsigned long long int cache[MAX_EXACT_FACTORIAL + 1];
+    // Эти строки выполняются ТОЛЬКО при первом вызове функции:
+    static unsigned long long int cacheInt[MAX_EXACT_FACTORIAL + 1];
+    static double cacheDouble[150];
     static bool initialized = false;
     
     if (!initialized) {
-        cache[0] = 1;
+        cacheInt[0] = 1;
         for (unsigned i = 1; i <= MAX_EXACT_FACTORIAL; i++) {
-            cache[i] = cache[i-1] * i;
+            cacheInt[i] = cacheInt[i-1] * i;
+        }
+        cacheDouble[0] = cacheInt[20] * 21;
+        for(unsigned i=22; i<=170; i++){
+            cacheDouble[i-21] = cacheDouble[i-22] * i;
         }
         initialized = true;
     }
     
     // Если есть в кэше — возвращаем точное значение с приведением
-    if (n <= MAX_EXACT_FACTORIAL) return static_cast<double>(cache[n]);
+    if (n <= MAX_EXACT_FACTORIAL) return static_cast<double>(cacheInt[n]);
     
     // Если больше 20! — считаем в double, 
     // unsigned long long переполнен, так что нет иных вариантов, кроме как накапливать ошибку doubl а
-    double result = static_cast<double>(cache[MAX_EXACT_FACTORIAL]);
-    for (unsigned i = MAX_EXACT_FACTORIAL + 1; i <= n; ++i) {
-        result *= i;
-    }
-    return result;
+    return cacheDouble[n-21];
 }
 
 double TaylorFunction::lagrangeRemainder(unsigned n, double x) const {

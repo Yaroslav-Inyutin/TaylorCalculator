@@ -5,10 +5,11 @@
 // Кажется, стоит быть умнее: создавать класс для каждого наследника единожды.
 // C другой стороны, тогда каждый из этих классов зависит от своего коэффициента. Тогда надо перезаписывать его каждый раз при чтении функции
 class TaylorFunction {
+private:
+    static const unsigned MAX_EXACT_FACTORIAL = 20;
 protected:
     double coefficient;  // k в f(kx)
-    static double factorial(unsigned n);
-    static const unsigned MAX_EXACT_FACTORIAL = 20;
+    static double factorial(unsigned n); // перегружаться не будет, поэтому не virtual. Не должна изменять 
 
     // вычисление n-ого члена в разложении Маклорена - своего для каждой функции
     virtual double maclaurinTerm(const unsigned n, const double x) const = 0; //

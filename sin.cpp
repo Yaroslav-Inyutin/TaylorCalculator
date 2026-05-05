@@ -14,10 +14,10 @@ double SinFunction::maclaurinTerm(unsigned n, double x) const {
     if (n % 2 == 0) return 0.0;  // Чётные члены = 0
     
     unsigned m = (n - 1) / 2; // тут уже работаем с нечётными. m нужен только для поиска знака
-    double y = coefficient * x;
+    double kx = coefficient * x;
     double sign = (m % 2 == 0) ? 1.0 : -1.0;
     // std::cout << "Член разложения: " << n << std::endl << "Значение слагаемого : " << sign * std::pow(y, n) / factorial(n);
-    return sign * std::pow(y, n) / factorial(n);
+    return sign * std::pow(kx, n) / factorial(n);
 } // это как будто бы и не нужно будет, только если с exactValue сравнивать напрямую
 
 double SinFunction::maxDerivative(unsigned n, double x) const {
