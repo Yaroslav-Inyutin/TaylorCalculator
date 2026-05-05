@@ -9,7 +9,7 @@ public:
     double exactValue(double x) const override;
     double maclaurinTerm(unsigned n, double x) const override;
     double maxDerivative(unsigned n, double intervalEnd) const override;
-    
+    double removePis(double x);
 private:
     
 };

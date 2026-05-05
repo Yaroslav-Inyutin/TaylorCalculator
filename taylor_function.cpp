@@ -53,10 +53,10 @@ double TaylorFunction::lagrangeRemainder(unsigned n, double x) const {
 
 double TaylorFunction::getApproximation(const double x, const unsigned n) const{
     double approx=0;
-    // std::cout << "Начинаем аппроксимацию" << std::endl;
+    std::cout << "Начинаем аппроксимацию" << std::endl;
     for(int i=0; i<=n; i++){
         approx+=maclaurinTerm(i, x);
-        // std::cout << "Новое значение суммы: " << approx << std::endl;
+        std::cout << "Новое значение суммы: " << approx << std::endl << std::endl;
     }
     return approx;
 }

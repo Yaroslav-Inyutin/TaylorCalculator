@@ -1,7 +1,8 @@
 #include "sin.hpp"
 #include <iostream>
 #include <cmath>
-using std::pow, std::abs;
+using std::pow, std::abs, std::min;
+double pi=std::numbers::pi;
 
 SinFunction::SinFunction(double k) : TaylorFunction(k) {}
 
@@ -13,9 +14,14 @@ double SinFunction::exactValue(double x) const {
 
 double SinFunction::maclaurinTerm(unsigned n, double x) const {
     if (n % 2 == 0) return 0.0;  // Чётные члены = 0
+
+    unsigned m = (n - 1) / 2; // тут уже работаем с нечётными. m нужен только для поиска знака
     double kx = coefficient * x;
-    // std::cout << "Член разложения: " << n << std::endl << "Значение слагаемого : " << sign * std::pow(y, n) / factorial(n);
-    return pow(-1, n-1) * pow(kx, n) / factorial(n);
+    int sign = (m % 2 == 0) ? 1 : -1;
+
+    std::cout << "Член разложения: " << n << std::endl << "Факториал: " << factorial(n) << std::endl << "(kx)^n : " << pow(kx, n)
+    << std::endl << "Значение слагаемого: " << sign * std::pow(kx, n) / factorial(n) << std::endl;
+    return sign * pow(kx, n) / factorial(n);
 } // это как будто бы и не нужно будет, только если с exactValue сравнивать напрямую
 
 double SinFunction::maxDerivative(unsigned n, double x) const {
@@ -33,15 +39,15 @@ double SinFunction::maxDerivative(unsigned n, double x) const {
     // Чтобы это чаще было так, можно повыкидывать pi из kx
     // Повыкидываем pi:
     double kx = k*absX;
-    while(kx > std::numbers::pi){
-        kx -= std::numbers::pi;
+    while(kx > pi){
+        kx -= pi;
         // std::cout << "kx = " << kx << std::endl;
     }
     // sin(kx) = sin(pi-kx)
-    kx = std::min(kx, std::numbers::pi-kx);
+    kx = min(kx, pi-kx);
     // std::cout << "kx = " << kx << std::endl;
-    double tightBound = std::pow(k, n) * kx;
-    double conservativeBound = std::pow(k, n);
+    double tightBound = pow(k, n) * kx;
+    double conservativeBound = pow(k, n);
     
-    return std::min(tightBound, conservativeBound);
+    return min(tightBound, conservativeBound);
 }
