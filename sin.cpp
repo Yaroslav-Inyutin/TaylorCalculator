@@ -31,12 +31,16 @@ double SinFunction::maxDerivative(unsigned n, double x) const {
     
     // Чётные производные: sin
     // |sin(kx)| ≤ |kx| верно ∀x, но уточнённая оценка выгодна только при |kx| < 1
-    // Чтобы это чаще было так, можно повыкидывать 2pi из kx
-    // Fовыкидываем 2pi:
+    // Чтобы это чаще было так, можно повыкидывать pi из kx
+    // Повыкидываем pi:
     double kx = k*absX;
-    while(kx > 2 * std::numbers::pi){
-        kx-=2 * std::numbers::pi;
+    while(kx > std::numbers::pi){
+        kx -= std::numbers::pi;
+        // std::cout << "kx = " << kx << std::endl;
     }
+    // sin(kx) = sin(pi-kx)
+    kx = std::min(kx, std::numbers::pi-kx);
+    // std::cout << "kx = " << kx << std::endl;
     double tightBound = std::pow(k, n) * kx;
     double conservativeBound = std::pow(k, n);
     
