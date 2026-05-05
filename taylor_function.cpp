@@ -27,9 +27,16 @@ double TaylorFunction::factorial(unsigned n) {
         for(unsigned i=22; i<=170; i++){
             cacheDouble[i-21] = cacheDouble[i-22] * i;
         }
+        // отладочный вывод кэша
+        // std::cout << "in cache now: " << std::endl;
+        // for(int i=0; i<=20; i++){
+        //     std::cout << "i = " << i << ", factorial = " << cacheInt[i] << std::endl;
+        // }
+        // for(int i=0; i<=149; i++){
+        //     std::cout << "i = " << i+21 << ", factorial = " << cacheDouble[i] << std::endl;
+        // }
         initialized = true;
     }
-    
     // Если есть в кэше — возвращаем точное значение с приведением
     if (n <= MAX_EXACT_FACTORIAL) return static_cast<double>(cacheInt[n]);
     
