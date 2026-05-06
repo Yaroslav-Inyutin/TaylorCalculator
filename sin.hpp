@@ -7,9 +7,9 @@ public:
     ~SinFunction() override;
     
     double exactValue(double x) const override;
-    double maclaurinTerm(unsigned n, double x) const override;
-    double maxDerivative(unsigned n, double intervalEnd) const override;
-    double removePis(double x);
+    double maclaurinTerm(const unsigned& n, const double& x) const override;
+    double maxDerivative(const unsigned& n, const double& x) const override;
+    // double removePis(double x);
 private:
     
 };

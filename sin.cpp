@@ -12,7 +12,7 @@ double SinFunction::exactValue(double x) const {
     return std::sin(coefficient * x);
 }
 
-double SinFunction::maclaurinTerm(unsigned n, double x) const {
+double SinFunction::maclaurinTerm(const unsigned& n, const double& x) const {
     if (n % 2 == 0) return 0.0;  // Чётные члены = 0
 
     unsigned m = (n - 1) / 2; // тут уже работаем с нечётными. m нужен только для поиска знака
@@ -24,7 +24,7 @@ double SinFunction::maclaurinTerm(unsigned n, double x) const {
     return sign * pow(kx, n) / factorial(n);
 } // это как будто бы и не нужно будет, только если с exactValue сравнивать напрямую
 
-double SinFunction::maxDerivative(unsigned n, double x) const {
+double SinFunction::maxDerivative(const unsigned& n, const double& x) const {
     double k = abs(coefficient);
     double absX = abs(x);
     
