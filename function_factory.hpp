@@ -7,9 +7,9 @@
 class FunctionFactory {
 public:
     // expr = expression - наше выражение с клавиатуры
-    static std::unique_ptr<TaylorFunction> create(std::string& expr);
+    std::shared_ptr<TaylorFunction> create(std::string& expr);
     
 private:
     // Вспомогательная функция для извлечения коэффициента
-    static double parseCoefficient(const std::string& content);
+    double parseCoefficient(const std::string& content);
 };
