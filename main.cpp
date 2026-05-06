@@ -1,7 +1,7 @@
 #include <iostream>
 #include <string>
 #include "function_factory.hpp"
-#include "get_accuracy.hpp"
+#include "calculator.hpp"
 #include <algorithm>
 
 using std::cout, std::cin, std::endl, std::cerr;
@@ -37,17 +37,17 @@ int main() {
             char a;
             cin >> a;
             if(a!='R') throw std::invalid_argument("Такого режима нет"); // инвалид аргумент - временное решение, потом займусь обработкой исключений вплотную
-            get_accuracy get_accuracy(func);
+            Calculator calc(func);
             cout << "Введите порядок разложения: ";
             cin >> n;
 
             cout << "Введите точку, в которой функция аппроксимируется: ";
             cin >> x;
 
-            cout << "Точность разложения (остаточный член): " << get_accuracy.lagrangeRemainder(x, n) << endl;
+            cout << "Точность разложения (остаточный член): " << calc.lagrangeRemainder(x, n) << endl;
             cout << "Toчное значение: " << func->exactValue(x) << endl;
-            cout << "Аппроксимация: " << get_accuracy.getApproximation(x, n) << endl;
-            cout << "Разность между точным значением и аппроксимацией: " << get_accuracy.compare_with_exactValue(x, n) << endl;
+            cout << "Аппроксимация: " << calc.approximation(x, n) << endl;
+            cout << "Разность между точным значением и аппроксимацией: " << calc.compare_with_exactValue(x, n) << endl;
             // Исполнение всех преобразований, построение графика
             
             break;  // Выход из цикла после успеха
