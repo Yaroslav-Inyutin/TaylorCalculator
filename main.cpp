@@ -1,6 +1,8 @@
 #include <iostream>
 #include <string>
 #include "function_factory.hpp"
+#include "get_accuracy.hpp"
+#include <algorithm>
 
 using std::cout, std::cin, std::endl, std::cerr;
 
@@ -27,18 +29,25 @@ int main() {
         // или: Задана точность. Построить график зависимости порядка разложения от x.
         try {
             // Пытаемся создать функцию
-            auto func = factory.create(input); 
+            auto func = factory.create(input); // получаем shared. В итоге именно shared, 
+            // потому что так проще всего решить проблему, что нам нужны публичные методы и функции, и класса-реализатора режима
 
+            // Спросить пользователя, какой режим выбрать. Далее реализация для нахождения точности при заданном порядке
+            cout << "Выберите режим работы. Отправьте R, если хотите найти точность в зависимости от порядка."; // это должно быть в графическом интерфейсе
+            char a;
+            cin >> a;
+            if(a!='R') throw std::invalid_argument("Такого режима нет"); // инвалид аргумент - временное решение, потом займусь обработкой исключений вплотную
+            get_accuracy get_accuracy(func);
             cout << "Введите порядок разложения: ";
             cin >> n;
 
             cout << "Введите точку, в которой функция аппроксимируется: ";
             cin >> x;
 
-            cout << "Точность разложения (остаточный член): " << func->lagrangeRemainder(n, x) << endl;
+            cout << "Точность разложения (остаточный член): " << get_accuracy.lagrangeRemainder(x, n) << endl;
             cout << "Toчное значение: " << func->exactValue(x) << endl;
-            cout << "Аппроксимация: " << func->getApproximation(x, n) << endl;
-            cout << "Разность между точным значением и аппроксимацией: " << func->compare_with_exactValue(x, n) << endl;
+            cout << "Аппроксимация: " << get_accuracy.getApproximation(x, n) << endl;
+            cout << "Разность между точным значением и аппроксимацией: " << get_accuracy.compare_with_exactValue(x, n) << endl;
             // Исполнение всех преобразований, построение графика
             
             break;  // Выход из цикла после успеха
