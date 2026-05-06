@@ -11,7 +11,7 @@ TaylorFunction::~TaylorFunction() {}
 // }
 
 // Static метод - общий для всех экземпляров
-double TaylorFunction::factorial(unsigned n) {
+double TaylorFunction::factorial(const unsigned& n) {
     // Кэш хранится точно в целочисленном типе
     // Эти строки выполняются ТОЛЬКО при первом вызове функции:
     static unsigned long long int cacheInt[MAX_EXACT_FACTORIAL + 1];
@@ -43,24 +43,4 @@ double TaylorFunction::factorial(unsigned n) {
     // Если больше 20! — считаем в double, 
     // unsigned long long переполнен, так что нет иных вариантов, кроме как накапливать ошибку doubl а
     return cacheDouble[n-21];
-}
-
-double TaylorFunction::lagrangeRemainder(unsigned n, double x) const {
-    double maxDeriv = maxDerivative(n + 1, x);
-    return std::abs(maxDeriv * std::pow(x, n + 1) / factorial(n+1));
-}
-
-
-double TaylorFunction::getApproximation(const double x, const unsigned n) const{
-    double approx=0;
-    std::cout << "Начинаем аппроксимацию" << std::endl;
-    for(int i=0; i<=n; i++){
-        approx+=maclaurinTerm(i, x);
-        std::cout << "Новое значение суммы: " << approx << std::endl << std::endl;
-    }
-    return approx;
-}
-
-double TaylorFunction::compare_with_exactValue(const double x, const unsigned n) const{
-    return std::abs(exactValue(x)-getApproximation(x, n));
 }
