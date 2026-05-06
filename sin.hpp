@@ -10,6 +10,4 @@ public:
     double maclaurinTerm(const unsigned& n, const double& x) const override;
     double maxDerivative(const unsigned& n, const double& x) const override;
     // double removePis(double x);
-private:
-    
 };
