@@ -64,3 +64,4 @@ borders Calculator::interval(double dx, double accuracy, unsigned n) const{
 }
 borders Calculator::interval(double dx, double accuracy) const{
     return interval(dx, accuracy, MAX_DEGREE);
+}
