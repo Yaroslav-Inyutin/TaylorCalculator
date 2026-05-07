@@ -3,7 +3,7 @@
 #include <cmath>
 using std::pow, std::log, std::abs;
 
-LnFunction::LnFunction() : TaylorFunction(1.0) {}
+LnFunction::LnFunction(double k) : TaylorFunction(k) {}
 LnFunction::~LnFunction() {}
 
 double LnFunction::exactValue(double x) const {
