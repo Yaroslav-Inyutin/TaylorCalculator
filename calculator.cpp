@@ -14,10 +14,10 @@ double Calculator::lagrangeRemainder(const double& x, const unsigned& n) const {
 
 double Calculator::approximation(const double& x, const unsigned& n){
     double approx=0;
-    std::cout << "Начинаем аппроксимацию" << std::endl;
+    // std::cout << "Начинаем аппроксимацию" << std::endl;
     for(int i=0; i<=n; i++){
         approx+=func->maclaurinTerm(i, x);
-        std::cout << "Новое значение суммы: " << approx << std::endl << std::endl;
+        // std::cout << "Новое значение суммы: " << approx << std::endl << std::endl;
     }
     return approx;
 }
