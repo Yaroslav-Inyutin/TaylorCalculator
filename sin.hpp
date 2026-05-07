@@ -1,5 +1,6 @@
 #pragma once
 #include "taylor_function.hpp"
+#include <numbers>
 
 class SinFunction : public TaylorFunction { 
 public:

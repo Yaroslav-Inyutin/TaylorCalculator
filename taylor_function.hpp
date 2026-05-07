@@ -5,8 +5,6 @@
 // Кажется, стоит быть умнее: создавать класс для каждого наследника единожды.
 // C другой стороны, тогда каждый из этих классов зависит от своего коэффициента. Тогда надо перезаписывать его каждый раз при чтении функции
 class TaylorFunction {
-private:
-    static const unsigned MAX_EXACT_FACTORIAL = 20;
 
 protected:
     double coefficient;  // k в f(kx)
@@ -28,4 +26,7 @@ public:
 
     virtual double maxDerivative(const unsigned& n, const double& x) const = 0; // вычисляет максимальную производную на отрезке
 
+    static const unsigned MAX_EXACT_FACTORIAL = 20;
+
+    static const unsigned MAX_FACTORIAL = 170;
 };

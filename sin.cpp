@@ -1,6 +1,7 @@
 #include "sin.hpp"
 #include <iostream>
 #include <cmath>
+#include <numbers>
 using std::pow, std::abs, std::min;
 double pi=std::numbers::pi;
 

@@ -10,7 +10,7 @@ private:
     std::shared_ptr<TaylorFunction> func;
 public:
     Calculator(std::shared_ptr<TaylorFunction> func);
-    ~Calculator(){};
+    ~Calculator();
     
     void setNewfunc(std::shared_ptr<TaylorFunction> func);
 
@@ -24,5 +24,5 @@ public:
     // вычислить остаточный член в форме Лагранжа
     double lagrangeRemainder(const double& x, const unsigned& n) const; // тоже не будет перегружаться
 
-    double degree(const double& accuracy, const double& x) const; // вычисляем порядок разложения по заданной точности
+    unsigned degree(const double& accuracy, const double& x) const; // вычисляем порядок разложения по заданной точности
 };
