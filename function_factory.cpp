@@ -1,7 +1,11 @@
 #include "function_factory.hpp"
 #include "sin.hpp"
-// #include "cos_function.h"
-// #include "exp_function.h" TBD
+#include "cos.hpp"
+#include "exp.hpp"
+#include "pow.hpp"
+#include "ln.hpp"
+#include "sh.hpp"
+#include "ch.hpp"
 #include <algorithm>
 #include <iostream>
 // Метод ниже парсит данное ему выражение и выдаёт 
