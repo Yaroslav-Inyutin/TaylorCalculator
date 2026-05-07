@@ -24,5 +24,5 @@ public:
     // вычислить остаточный член в форме Лагранжа
     double lagrangeRemainder(const double& x, const unsigned& n) const; // тоже не будет перегружаться
 
-    unsigned degree(const double& accuracy, const double& x) const; // вычисляем порядок разложения по заданной точности
+    unsigned degree(const double& x, const double& accuracy) const; // вычисляем порядок разложения по заданной точности
 };

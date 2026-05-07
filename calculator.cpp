@@ -1,7 +1,7 @@
 #include <cmath>
 #include <iostream>
 #include "calculator.hpp"
-#degine THRESHOLD 1e-300
+#define THRESHOLD 1e-300
 Calculator::Calculator(std::shared_ptr<TaylorFunction> func) : func(func) {}
 
 Calculator::~Calculator(){}
@@ -32,9 +32,9 @@ void Calculator::setNewfunc(std::shared_ptr<TaylorFunction> func){
 unsigned Calculator::degree(const double& x, const double& accuracy) const{
     double cur_acc;
     unsigned deg=0;
-    for(deg<=func->MAX_FACTORIAL; deg++){
-        cur_acc = lagrangeRemainder(x, accuracy);
+    for(; deg<=func->MAX_FACTORIAL; deg++){
+        cur_acc = lagrangeRemainder(x, deg);
         if(cur_acc - accuracy <= THRESHOLD) return deg;
     }
-    throw std::runtime_error("Не удалось достигнуть требуемой точности") // тоже позже перепишу какой тут эррор
+    throw std::runtime_error("Не удалось достигнуть требуемой точности"); // тоже позже перепишу какой тут эррор
 }
