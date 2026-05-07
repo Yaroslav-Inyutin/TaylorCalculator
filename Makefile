@@ -4,8 +4,8 @@ CFLAGS = -std=c++20 -c
 all: taylorCalculator
 
 clean: 
-	rm *.o
-	rm taylorCalculator
+	rm -f *.o
+	rm -f taylorCalculator
 
 taylorCalculator: main.o taylor_function.o function_factory.o calculator.o sin.o cos.o ln.o pow.o exp.o sh.o ch.o 
 	$(CC) -std=c++20 main.o taylor_function.o function_factory.o calculator.o sin.o cos.o ln.o pow.o exp.o sh.o ch.o -o taylorCalculator
