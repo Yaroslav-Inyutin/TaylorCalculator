@@ -1,7 +1,10 @@
 #include <cmath>
 #include <iostream>
 #include "calculator.hpp"
-#define THRESHOLD 1e-300
+
+#define THRESHOLD 1e-200
+#define MAX_DEGREE func->MAX_FACTORIAL-1
+
 Calculator::Calculator(std::shared_ptr<TaylorFunction> func) : func(func) {}
 
 Calculator::~Calculator(){}
@@ -38,3 +41,26 @@ unsigned Calculator::degree(const double& x, const double& accuracy) const{
     }
     throw std::runtime_error("Не удалось достигнуть требуемой точности"); // тоже позже перепишу какой тут эррор
 }
+double Calculator::right_intervalEnd(const double& dx, const double& accuracy, const unsigned& n) const{
+    if(dx < THRESHOLD) throw std::invalid_argument("Слишком высокая точность"); // тоже позже перепишу какой тут эррор
+    double border=0.0;
+    for(; lagrangeRemainder(border, n)<=accuracy; border+=dx){};
+    return border;
+}
+double Calculator::right_intervalEnd(const double& dx, const double& accuracy) const{
+    return right_intervalEnd(dx, accuracy, MAX_DEGREE);
+}
+double Calculator::left_intervalEnd(const double& dx, const double& accuracy, const unsigned& n) const{
+    if(dx < THRESHOLD) throw std::invalid_argument("Слишком высокая точность"); // тоже позже перепишу какой тут эррор
+    double border=0.0;
+    for(; lagrangeRemainder(border, n)<=accuracy; border-=dx){};
+    return border;
+}
+double Calculator::left_intervalEnd(const double& dx, const double& accuracy) const{
+    return left_intervalEnd(dx, accuracy, MAX_DEGREE);
+}
+borders Calculator::interval(const double& dx, const double& accuracy, const unsigned& n) const{
+    return {left_intervalEnd(dx, accuracy, n), right_intervalEnd(dx, accuracy, n)};
+}
+borders Calculator::interval(const double& dx, const double& accuracy) const{
+    return interval(dx, accuracy, MAX_DEGREE);
