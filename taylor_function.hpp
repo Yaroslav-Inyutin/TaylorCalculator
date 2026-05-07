@@ -17,14 +17,14 @@ public:
     virtual ~TaylorFunction()=0;
     
     // Значение функции в заданной точке из сmath
-    virtual double exactValue(const double x) const=0;
+    virtual double exactValue(double x) const=0;
 
-    static double factorial(const unsigned& n); // перегружаться в наследниках не будет, поэтому не virtual.
+    static double factorial(unsigned n); // перегружаться в наследниках не будет, поэтому не virtual.
 
     // вычисление n-ого члена в разложении Маклорена - своего для каждой функции, поэтому virtual=0
-    virtual double maclaurinTerm(const unsigned& n, const double& x) const = 0; //
+    virtual double maclaurinTerm(unsigned n, double x) const = 0; //
 
-    virtual double maxDerivative(const unsigned& n, const double& x) const = 0; // вычисляет максимальную производную на отрезке
+    virtual double maxDerivative(unsigned n, double x) const = 0; // вычисляет максимальную производную на отрезке
 
     static const unsigned MAX_EXACT_FACTORIAL = 20;
 

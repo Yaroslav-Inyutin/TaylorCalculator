@@ -11,7 +11,7 @@ TaylorFunction::~TaylorFunction() {}
 // }
 
 // Static метод - общий для всех экземпляров
-double TaylorFunction::factorial(const unsigned& n) {
+double TaylorFunction::factorial(unsigned n) {
     // Кэш хранится точно в целочисленном типе
     // Эти строки выполняются ТОЛЬКО при первом вызове функции:
     static unsigned long long int cacheInt[MAX_EXACT_FACTORIAL + 1];
