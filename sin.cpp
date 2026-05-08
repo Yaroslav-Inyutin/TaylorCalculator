@@ -20,8 +20,8 @@ double SinFunction::maclaurinTerm(unsigned n, double x) const {
     double kx = coefficient * x;
     int sign = (m % 2 == 0) ? 1 : -1;
 
-    std::cout << "Член разложения: " << n << std::endl << "Факториал: " << factorial(n) << std::endl << "(kx)^n : " << pow(kx, n)
-    << std::endl << "Значение слагаемого: " << sign * std::pow(kx, n) / factorial(n) << std::endl;
+    // std::cout << "Член разложения: " << n << std::endl << "Факториал: " << factorial(n) << std::endl << "(kx)^n : " << pow(kx, n)
+    // << std::endl << "Значение слагаемого: " << sign * std::pow(kx, n) / factorial(n) << std::endl;
     return sign * pow(kx, n) / factorial(n);
 } // это как будто бы и не нужно будет, только если с exactValue сравнивать напрямую
 
