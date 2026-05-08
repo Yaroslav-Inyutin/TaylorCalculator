@@ -37,7 +37,7 @@ int main() {
             "Отправьте x, если хотите найти границы интервала, на котором реализуется заданная точность. "; // это должно быть в графическом интерфейсе
             char a;
             cin >> a;
-            if(a!='r' && a!='r' && a!='x') throw std::invalid_argument("Такого режима нет"); // инвалид аргумент - временное решение, потом займусь обработкой исключений вплотную
+            if(a!='r' && a!='n' && a!='x') throw std::invalid_argument("Такого режима нет"); // инвалид аргумент - временное решение, потом займусь обработкой исключений вплотную
             Calculator calc(func);
             if(a=='r'){
                 unsigned n;
@@ -48,6 +48,7 @@ int main() {
                 cout << "Введите точку, в которой функция аппроксимируется: ";
                 cin >> x;
 
+                cout << endl << "==== Результаты ====" << endl;
                 cout << "Точность разложения (остаточный член): " << calc.lagrangeRemainder(x, n) << endl;
                 cout << "Toчное значение: " << func->exactValue(x) << endl;
                 cout << "Аппроксимация: " << calc.approximation(x, n) << endl;
@@ -61,12 +62,14 @@ int main() {
                 cout << "Введите требуемую точность: ";
                 cin >> acc;
 
-                cout << "Введите точку, в которой функция аппроксимируется: " << endl;
+                cout << "Введите точку, в которой функция аппроксимируется: ";
                 cin >> x;
                 
                 unsigned n = calc.degree(x, acc);
+
+                cout << endl << "==== Результаты ====" << endl;
                 cout << "Требуемый порядок: " << n << endl;
-                cout << "Остаточный член для этого порядка: " << calc.lagrangeRemainder(x, n);
+                cout << "Остаточный член для этого порядка: " << calc.lagrangeRemainder(x, n) << endl;
                 cout << "Toчное значение: " << func->exactValue(x) << endl;
                 cout << "Аппроксимация: " << calc.approximation(x, n) << endl;
             }
@@ -84,6 +87,7 @@ int main() {
                 cout << "Введите порядок разложения (по умолчанию: 169): ";
                 cin >> n;
                 
+                cout << endl << "==== Результаты ====" << endl;
                 borders bor= calc.interval(dx, acc, n); // добавить вызов нужной перегрузки в зависимости от введённого n 
                 bor.printInterval();
             }
