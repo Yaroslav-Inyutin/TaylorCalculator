@@ -5,8 +5,9 @@ class ShFunction : public TaylorFunction {
 public:
     explicit ShFunction(double k = 1.0);
     ~ShFunction() override;
-
     double exactValue(double x) const override;
-    double maclaurinTerm(unsigned n, double x) const override;
+    double firstTerm(double x) const override;
+    unsigned firstDeg() const override;
+    double nextTerm(double prevTerm, unsigned prevN, double x) const override;
     double maxDerivative(unsigned n, double intervalEnd) const override;
 };
