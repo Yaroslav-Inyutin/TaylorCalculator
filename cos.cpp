@@ -10,16 +10,19 @@ double CosFunction::exactValue(double x) const {
     return std::cos(coefficient * x);
 }
 
-double CosFunction::maclaurinTerm(unsigned n, double x) const {
-    if (n % 2 == 1) return 0.0; // нечётные = 0
-
-    unsigned m = n / 2;
-    double kx = coefficient * x;
-    int sign = (m % 2 == 0) ? 1 : -1;
-
-    return sign * pow(kx, n) / factorial(n);
+double CosFunction::firstTerm(double x) const{
+    return 1.0;
 }
 
+unsigned CosFunction::firstDeg() const
+{
+    return 0;
+}
+
+double CosFunction::nextTerm(double prevTerm, unsigned prevN, double x) const{
+    double kx = coefficient * x;
+    return prevTerm * (-kx * kx /((prevN + 1.0) * (prevN + 2.0)));
+}
 double CosFunction::maxDerivative(unsigned n, double x) const {
     return pow(abs(coefficient), n); // как у sin для нечётных
 }
