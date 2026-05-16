@@ -11,7 +11,7 @@ double ShFunction::exactValue(double x) const {
 }
 
 double ShFunction::firstTerm(double x) const {
-    return coefficent * x;
+    return coefficient * x;
 }
 
 unsigned ShFunction::firstDeg() const {

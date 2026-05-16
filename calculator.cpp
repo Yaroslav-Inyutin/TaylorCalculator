@@ -1,7 +1,7 @@
 #include <cmath>
 #include <iostream>
 #include "calculator.hpp"
-
+static constexpr unsigned MAX_DEGREE = 200;
 #define THRESHOLD 1e-200
 
 Calculator::Calculator(std::shared_ptr<TaylorFunction> func) : func(func) {}
@@ -13,7 +13,6 @@ double Calculator::lagrangeRemainder(double x, unsigned n) const {
     return std::abs(maxDeriv * std::pow(x, n + 1) / std::tgamma(n+2));
 }
 
-
 double Calculator::approximation(double x, unsigned n) const{
     x = func->prepArg(x);
     unsigned curDeg = func->firstDeg();
@@ -23,8 +22,8 @@ double Calculator::approximation(double x, unsigned n) const{
     double term = func->firstTerm(x);
     double sum = term;
     while(curDeg + 2 <= n){
-	term = func->nextTerm(term, curDegree, x);
-	curDegree += 2;
+	term = func->nextTerm(term, curDeg, x);
+	curDeg+= 2;
 	sum += term;
     }
     return sum;
@@ -40,8 +39,7 @@ void Calculator::setNewfunc(std::shared_ptr<TaylorFunction> func){
 unsigned Calculator::degree(double x, double accuracy) const{
     double cur_acc;
     unsigned deg=0;
-    static constexpr unsigned MAX_DEG = 200;
-    for(; deg<=func->MAX_DEG; deg++){
+    for(; deg<=MAX_DEGREE; deg++){
         cur_acc = lagrangeRemainder(x, deg);
         if(cur_acc - accuracy <= THRESHOLD) return deg;
     }

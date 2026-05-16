@@ -24,5 +24,5 @@ double LnFunction::nextTerm(double prevTerm, unsigned prevN, double x) const {
 
 double LnFunction::maxDerivative(unsigned n, double x) const {
     double denom = pow(1 + abs(x), n);
-    return factorial(n - 1) / denom;
+    return std::tgamma(n) / denom;
 }

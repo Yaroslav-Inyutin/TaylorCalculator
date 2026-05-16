@@ -1,7 +1,7 @@
 #include "sin.hpp"
 #include <iostream>
 #include <cmath>
-using std::pow, std::abs;
+using std::pow, std::abs, std::min, std::numbers::pi;
 SinFunction::SinFunction(double k) : TaylorFunction(k) {}
 
 SinFunction::~SinFunction(){}
@@ -11,7 +11,7 @@ double SinFunction::exactValue(double x) const {
 }
 
 double SinFunction::firstTerm(double x) const{
-	return coefficent * x;
+	return coefficient * x;
 }
 
 unsigned SinFunction::firstDeg() const{
