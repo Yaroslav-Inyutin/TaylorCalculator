@@ -10,13 +10,21 @@ double ExpFunction::exactValue(double x) const {
     return exp(coefficient * x);
 }
 
-double ExpFunction::maclaurinTerm(unsigned n, double x) const {
+double ExpFunction::firstTerm(double x) const {
+    (void)x;
+    return 1.0;
+}
+
+unsigned ExpFunction::firstDeg() const {
+    return 0;
+}
+
+double ExpFunction::nextTerm(double prevTerm, unsigned prevN, double x) const {
     double kx = coefficient * x;
-    return pow(kx, n) / factorial(n);
+    return prevTerm * (kx / (prevN + 1.0));
 }
 
 double ExpFunction::maxDerivative(unsigned n, double x) const {
     double k = abs(coefficient);
-    double maxExp = exp(k * abs(x));
-    return pow(k, n) * maxExp;
+    return pow(k, n) * exp(k * abs(x));
 }
