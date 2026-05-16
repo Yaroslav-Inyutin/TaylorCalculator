@@ -3,6 +3,7 @@
 #include "function_factory.hpp"
 #include "calculator.hpp"
 #include <algorithm>
+#include <limits>
 
 using std::cout, std::cin, std::endl, std::cerr;
 
@@ -30,7 +31,21 @@ int main() {
             // Пытаемся создать функцию
             auto func = factory.create(input); // получаем shared. В итоге именно shared, 
             // потому что так проще всего решить проблему, что нам нужны публичные методы и функции, и класса-реализатора режима
+	    //флаг, отвечающий за использование/неиспользование оптимизации аргумента тригонометрических функций
+	    bool useReduction = true;
 
+	    if (func->isTrigonometric()) {
+	    	cout << "Использовать оптимизацию аргумента для тригонометрических функций? (y/n): ";
+		char answ;
+		cin >> answ;
+		cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+		if (answ == 'n') {
+			useReduction = false;
+		} else if (answ != 'y') {
+			throw std::invalid_argument("Некорректный выбор reduction режима");
+		}
+	    }
+	    func = factory.create(input, useReduction);
             // Спросить пользователя, какой режим выбрать. Далее реализация для нахождения точности при заданном порядке
             cout << "Выберите режим работы.\nОтправьте r, если хотите найти точность в зависимости от порядка" << endl <<
             "Отправьте n, если хотите найти минимальный порядок разложения для заданной точности." << endl <<

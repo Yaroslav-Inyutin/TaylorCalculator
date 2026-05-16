@@ -7,4 +7,5 @@ protected:
 public:
     TrigonometricFunction(double k, bool useReduction = true);
     double prepArg(double x) const override;
+    bool isTrigonometric() const override;
 };

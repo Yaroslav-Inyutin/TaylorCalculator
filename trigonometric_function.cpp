@@ -10,3 +10,6 @@ double TrigonometricFunction::prepArg(double x) const{
     double reduced = std::remainder(coefficient * x, 2.0 * std::numbers::pi);
     return reduced / coefficient;
 }
+bool TrigonometricFunction::isTrigonometric() const {
+	return true;
+}

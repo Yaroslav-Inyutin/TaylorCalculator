@@ -41,4 +41,6 @@ public:
 
     //следующий член
     virtual double nextTerm(double prevTerm, unsigned prevN, double x) const = 0;
+
+    virtual bool isTrigonometric() const;
 };

@@ -9,7 +9,9 @@ TaylorFunction::~TaylorFunction() = default;
 double TaylorFunction::prepArg(double x) const{
 	return x;
 }
-
+bool TaylorFunction::isTrigonometric() const {
+	return false;
+}
 // double TaylorFunction::getCoefficient() const {
 //     return coefficient;
 // }

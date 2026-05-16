@@ -10,7 +10,7 @@
 #include <iostream>
 // Метод ниже парсит данное ему выражение и выдаёт 
 // Формат функции: пока что cos ( k x) 
-std::shared_ptr<TaylorFunction> FunctionFactory::create(std::string& expr) { // Реализуем create
+std::shared_ptr<TaylorFunction> FunctionFactory::create(std::string& expr, bool useReduction) { // Реализуем create
     
     // Убираем пробелы (erase-remove idiom)
     expr.erase(std::remove(expr.begin(), expr.end(), ' '), expr.end());
@@ -34,12 +34,12 @@ std::shared_ptr<TaylorFunction> FunctionFactory::create(std::string& expr) { // 
     
     // Создаём нужный объект
     if (funcName == "sin") {
-        std::shared_ptr<TaylorFunction> res = std::unique_ptr<TaylorFunction>(new SinFunction(k));
+        std::shared_ptr<TaylorFunction> res = std::unique_ptr<TaylorFunction>(new SinFunction(k, useReduction));
         std::cout << "Найден синус\n";
         return res;
     }
     // if (funcName == "cos") {
-    //     return new CosFunction(k);
+    //     return new CosFunction(k, useReduction);
     // }
     // if (funcName == "exp") {
     //     return new ExpFunction(k);
