@@ -1,10 +1,7 @@
 #include "sin.hpp"
 #include <iostream>
 #include <cmath>
-#include <numbers>
-using std::pow, std::abs, std::min;
-double pi=std::numbers::pi;
-
+using std::pow, std::abs;
 SinFunction::SinFunction(double k) : TaylorFunction(k) {}
 
 SinFunction::~SinFunction(){}
@@ -13,17 +10,18 @@ double SinFunction::exactValue(double x) const {
     return std::sin(coefficient * x);
 }
 
-double SinFunction::maclaurinTerm(unsigned n, double x) const {
-    if (n % 2 == 0) return 0.0;  // Чётные члены = 0
+double SinFunction::firstTerm(double x) const{
+	return coefficent * x;
+}
 
-    unsigned m = (n - 1) / 2; // тут уже работаем с нечётными. m нужен только для поиска знака
-    double kx = coefficient * x;
-    int sign = (m % 2 == 0) ? 1 : -1;
+unsigned SinFunction::firstDeg() const{
+	return 1;
+}
 
-    // std::cout << "Член разложения: " << n << std::endl << "Факториал: " << factorial(n) << std::endl << "(kx)^n : " << pow(kx, n)
-    // << std::endl << "Значение слагаемого: " << sign * std::pow(kx, n) / factorial(n) << std::endl;
-    return sign * pow(kx, n) / factorial(n);
-} // это как будто бы и не нужно будет, только если с exactValue сравнивать напрямую
+double SinFunction::nextTerm(double prevTerm, unsigned prevN, double x) const{
+	double kx = coefficient * x;
+	return prevTerm * (-kx * kx /((prevN + 1.0) * (prevN + 2.0)));
+}
 
 double SinFunction::maxDerivative(unsigned n, double x) const {
     double k = abs(coefficient);
