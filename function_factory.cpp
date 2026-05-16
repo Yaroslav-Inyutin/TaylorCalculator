@@ -10,24 +10,25 @@
 #include <iostream>
 // Метод ниже парсит данное ему выражение и выдаёт 
 // Формат функции: пока что cos ( k x) 
-std::shared_ptr<TaylorFunction> FunctionFactory::create(std::string& expr, bool useReduction) { // Реализуем create
+std::shared_ptr<TaylorFunction> FunctionFactory::create(const std::string& expr, bool useReduction) { // Реализуем create
     
     // Убираем пробелы (erase-remove idiom)
-    expr.erase(std::remove(expr.begin(), expr.end(), ' '), expr.end());
+    std::string cleaned = expr;
+    cleaned.erase(std::remove(cleaned.begin(), cleaned.end(), ' '), cleaned.end());
 
-    auto openParen = expr.find('(');
+    auto openParen = cleaned.find('(');
     if (openParen == std::string::npos) {
         throw std::invalid_argument("Отсутствует открывающая скобка '('");
     }
 
-    auto closeParen = expr.find(')', openParen); // Ищем уже с открытой скобки, что логично
+    auto closeParen = cleaned.find(')', openParen); // Ищем уже с открытой скобки, что логично
     if (closeParen == std::string::npos) {
         throw std::invalid_argument("Отсутствует закрывающая скобка ')'");
     }
 
     // Теперь безопасно извлекать имя функции и содержимое скобок:
-    std::string funcName = expr.substr(0, openParen);
-    std::string content = expr.substr(openParen + 1, closeParen - openParen - 1);
+    std::string funcName = cleaned.substr(0, openParen);
+    std::string content = cleaned.substr(openParen + 1, closeParen - openParen - 1);
     
     // Парсим коэффициент
     double k = parseCoefficient(content);

@@ -1,4 +1,4 @@
-.PHONY: all clean 
+.PHONY: all clean install uninstall
 CC = g++
 CFLAGS = -std=c++20 -c
 all: taylorCalculator
@@ -13,11 +13,14 @@ install:
 uninstall:
 	rm /usr/local/bin/taylorCalculator
 
-taylorCalculator: main.o taylor_function.o function_factory.o calculator.o sin.o cos.o ln.o pow.o exp.o sh.o ch.o trigonometric_function.o
-	$(CC) -std=c++20 main.o taylor_function.o function_factory.o calculator.o sin.o cos.o ln.o pow.o exp.o sh.o ch.o trigonometric_function.o -o taylorCalculator
+taylorCalculator: main.o taylor_controller.o taylor_function.o function_factory.o calculator.o sin.o cos.o ln.o pow.o exp.o sh.o ch.o trigonometric_function.o
+	$(CC) -std=c++20 main.o taylor_controller.o taylor_function.o function_factory.o calculator.o sin.o cos.o ln.o pow.o exp.o sh.o ch.o trigonometric_function.o -o taylorCalculator
 
-main.o: main.cpp function_factory.hpp calculator.hpp
+main.o: main.cpp function_factory.hpp calculator.hpp taylor_controller.hpp
 	$(CC) $(CFLAGS) main.cpp -o main.o
+
+taylor_controller.o: taylor_controller.cpp taylor_controller.hpp function_factory.hpp calculator.hpp
+	$(CC) $(CFLAGS) taylor_controller.cpp -o taylor_controller.o
 
 taylor_function.o: taylor_function.cpp taylor_function.hpp
 	$(CC) $(CFLAGS) taylor_function.cpp -o taylor_function.o

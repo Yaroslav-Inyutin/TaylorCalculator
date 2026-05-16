@@ -4,6 +4,7 @@
 #include <algorithm>
 #include "function_factory.hpp"
 #include "calculator.hpp"
+#include "taylor_controller.hpp"
 
 using std::cout, std::cin, std::endl, std::cerr;
 
@@ -45,6 +46,7 @@ double readDouble() {
 
 int main() {
     FunctionFactory factory;  // Создаём один раз снаружи цикла
+    TaylorController controller;
     std::string input;
 
     // Бесконечный цикл — выходим только при успехе или явном выходе
@@ -106,12 +108,7 @@ int main() {
                 cout << "Введите точку, в которой функция аппроксимируется: ";
                 double x = readDouble();
 
-                cout << endl << "==== Результаты ====" << endl;
-                cout << "Точность разложения (остаточный член): " << calc.lagrangeRemainder(x, n) << endl;
-                cout << "Toчное значение: " << func->exactValue(x) << endl;
-                cout << "Аппроксимация: " << calc.approximation(x, n) << endl;
-                cout << "Разность между точным значением и аппроксимацией: " << calc.compare_with_exactValue(x, n) << endl;
-                // Исполнение всех преобразований, построение графика
+                controller.runRemainder(input, useReduction, x, n);
             }
             if(a=='n'){
                 cout << "Введите требуемую точность: ";
@@ -120,13 +117,7 @@ int main() {
                 cout << "Введите точку, в которой функция аппроксимируется: ";
                 double x = readDouble();
                 
-                unsigned n = calc.degree(x, acc);
-
-                cout << endl << "==== Результаты ====" << endl;
-                cout << "Требуемый порядок: " << n << endl;
-                cout << "Остаточный член для этого порядка: " << calc.lagrangeRemainder(x, n) << endl;
-                cout << "Toчное значение: " << func->exactValue(x) << endl;
-                cout << "Аппроксимация: " << calc.approximation(x, n) << endl;
+                controller.runDegree(input, useReduction, x, acc);
             }
             if (a=='x'){
                 cout << "Введите требуемую точность: ";
@@ -138,9 +129,7 @@ int main() {
                 cout << "Введите порядок разложения (по умолчанию: 169): ";
                 unsigned n = readUnsigned();
                 
-                cout << endl << "==== Результаты ====" << endl;
-                borders bor= calc.interval(dx, acc, n); // добавить вызов нужной перегрузки в зависимости от введённого n 
-                bor.printInterval();
+                controller.runInterval(input, useReduction, dx, acc, n);
             }
             break;  // Выход из цикла после успеха
         }

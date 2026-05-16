@@ -7,7 +7,7 @@
 class FunctionFactory {
 public:
     // expr = expression - наше выражение с клавиатуры
-    std::shared_ptr<TaylorFunction> create(std::string& expr, bool useReduction = true);
+    std::shared_ptr<TaylorFunction> create(const std::string& expr, bool useReduction = true);
     
 private:
     // Вспомогательная функция для извлечения коэффициента
