@@ -9,5 +9,5 @@ public:
     double firstTerm(double x) const override;
     unsigned firstDeg() const override;
     double nextTerm(double prevTerm, unsigned prevN, double x) const override;
-    double maxDerivative(unsigned n, double intervalEnd) const override;
+    double maxDerivative(unsigned n, double x) const override;
 };
