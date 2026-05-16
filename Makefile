@@ -7,6 +7,12 @@ clean:
 	rm -f *.o
 	rm -f taylorCalculator
 
+install:
+	install ./taylorCalculator /usr/local/bin
+
+uninstall:
+	rm /usr/local/bin/taylorCalculator
+
 taylorCalculator: main.o taylor_function.o function_factory.o calculator.o sin.o cos.o ln.o pow.o exp.o sh.o ch.o trigonometric_function.o
 	$(CC) -std=c++20 main.o taylor_function.o function_factory.o calculator.o sin.o cos.o ln.o pow.o exp.o sh.o ch.o trigonometric_function.o -o taylorCalculator
 
