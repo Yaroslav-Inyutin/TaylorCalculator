@@ -3,7 +3,6 @@
 #include "calculator.hpp"
 
 #define THRESHOLD 1e-200
-#define MAX_DEGREE func->MAX_FACTORIAL-1
 
 Calculator::Calculator(std::shared_ptr<TaylorFunction> func) : func(func) {}
 
@@ -11,21 +10,27 @@ Calculator::~Calculator(){}
 
 double Calculator::lagrangeRemainder(double x, unsigned n) const {
     double maxDeriv = func->maxDerivative(n + 1, x);
-    return std::abs(maxDeriv * std::pow(x, n + 1) / func->factorial(n+1));
+    return std::abs(maxDeriv * std::pow(x, n + 1) / std::tgamma(n+2));
 }
 
 
-double Calculator::approximation(double x, unsigned n){
-    double approx=0;
-    // std::cout << "Начинаем аппроксимацию" << std::endl;
-    for(int i=0; i<=n; i++){
-        approx+=func->maclaurinTerm(i, x);
-        // std::cout << "Новое значение суммы: " << approx << std::endl << std::endl;
+double Calculator::approximation(double x, unsigned n) const{
+    x = func->prepArg(x);
+    unsigned curDeg = func->firstDeg();
+    if (curDeg > n){
+	return 0.0;
     }
-    return approx;
+    double term = func->firstTerm(x);
+    double sum = term;
+    while(curDeg + 2 <= n){
+	term = func->nextTerm(term, curDegree, x);
+	curDegree += 2;
+	sum += term;
+    }
+    return sum;
 }
 
-double Calculator::compare_with_exactValue(double x, unsigned n){
+double Calculator::compare_with_exactValue(double x, unsigned n) const{
     return std::abs(func->exactValue(x)-approximation(x, n));
 }
 
@@ -35,7 +40,8 @@ void Calculator::setNewfunc(std::shared_ptr<TaylorFunction> func){
 unsigned Calculator::degree(double x, double accuracy) const{
     double cur_acc;
     unsigned deg=0;
-    for(; deg<=func->MAX_FACTORIAL; deg++){
+    static constexpr unsigned MAX_DEG = 200;
+    for(; deg<=func->MAX_DEG; deg++){
         cur_acc = lagrangeRemainder(x, deg);
         if(cur_acc - accuracy <= THRESHOLD) return deg;
     }

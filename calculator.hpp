@@ -33,11 +33,11 @@ public:
     void setNewfunc(std::shared_ptr<TaylorFunction> func);
 
     // аппроксимировать функцию по Тейлору
-    double approximation(double x, unsigned n); // писать тут конст или нет - зависит от того, хотим ли мы хранить аппроксимацию.
+    double approximation(double x, unsigned n) const; // писать тут конст или нет - зависит от того, хотим ли мы хранить аппроксимацию.
     //это эффективнее по времени исполнения, но может быть немного бесполезно и геморно в воркфлоу: там всё равно каждвя функция пересчитается несколько раз
 
     // сравнить аппроксимацию с cmath
-    double compare_with_exactValue(double x, unsigned n); // не перегружаются, не virtual. тоже не const, потому что использует getApproximation
+    double compare_with_exactValue(double x, unsigned n) const; // не перегружаются, не virtual. тоже не const, потому что использует getApproximation
     
     // вычислить остаточный член в форме Лагранжа
     double lagrangeRemainder(double x, unsigned n) const; // тоже не будет перегружаться
