@@ -1,10 +1,10 @@
 #pragma once
-#include "taylor_function.hpp"
+#include "trigonometric_function.hpp"
 #include <numbers>
 
-class SinFunction : public TaylorFunction { 
+class SinFunction : public TrigonometricFunction { 
 public:
-    explicit SinFunction(double k = 1.0);
+    explicit SinFunction(double k = 1.0, bool useReduction = true);
     ~SinFunction() override;
     
     double exactValue(double x) const override;

@@ -2,7 +2,7 @@
 #include <iostream>
 #include <cmath>
 using std::pow, std::abs, std::min, std::numbers::pi;
-SinFunction::SinFunction(double k) : TaylorFunction(k) {}
+SinFunction::SinFunction(double k, bool useReduction) : TrigonometricFunction(k, useReduction) {}
 
 SinFunction::~SinFunction(){}
 

@@ -1,9 +1,9 @@
 #pragma once
-#include "taylor_function.hpp"
+#include "trigonometric_function.hpp"
 
-class CosFunction : public TaylorFunction {
+class CosFunction : public TrigonometricFunction {
 public:
-    explicit CosFunction(double k = 1.0);
+    explicit CosFunction(double k = 1.0, bool useReduction = true);
     ~CosFunction() override;
 
     double exactValue(double x) const override;
