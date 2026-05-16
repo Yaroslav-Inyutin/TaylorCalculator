@@ -10,14 +10,19 @@ double LnFunction::exactValue(double x) const {
     return log(1 + x);
 }
 
-double LnFunction::maclaurinTerm(unsigned n, double x) const {
-    if (n == 0) return 0.0;
-    int sign = (n % 2 == 0) ? -1 : 1;
-    return sign * pow(x, n) / n;
+double LnFunction::firstTerm(double x) const {
+    return x;
+}
+
+unsigned LnFunction::firstDeg() const {
+    return 1;
+}
+
+double LnFunction::nextTerm(double prevTerm, unsigned prevN, double x) const {
+    return -prevTerm * (prevN / (prevN + 1.0)) * x;
 }
 
 double LnFunction::maxDerivative(unsigned n, double x) const {
-    // n-я производная ~ (n-1)! / (1+x)^n
     double denom = pow(1 + abs(x), n);
     return factorial(n - 1) / denom;
 }

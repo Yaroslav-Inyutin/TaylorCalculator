@@ -4,16 +4,6 @@
 
 PowerFunction::PowerFunction(double alpha, double k) : TaylorFunction(k), alpha_(alpha) {}
 
-double PowerFunction::binomialCoeff(double alpha, unsigned n) {
-    if (n == 0) return 1.0;
-    
-    double res = 1.0;
-    for (unsigned i = 0; i < n; ++i) {
-        res *= (alpha - static_cast<double>(i));
-    }
-    return res;
-}
-
 double PowerFunction::exactValue(double x) const {
     return std::pow(1.0 + x, alpha_);
 }
