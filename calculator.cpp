@@ -10,15 +10,13 @@ Calculator::~Calculator(){}
 
 double Calculator::lagrangeRemainder(double x, unsigned n) const {
     double maxDeriv = func->maxDerivative(n + 1, x);
-    return std::abs(maxDeriv * std::pow(x, n + 1) / std::tgamma(n+2));
+    return std::abs(maxDeriv * std::pow(x, n + 1) / std::tgamma(n+2)); //std::tgamma(x) возвращает факториал от x-1
 }
 
 double Calculator::approximation(double x, unsigned n) const{
-    x = func->prepArg(x);
+    x = func->prepArg(x); // приводит аргумент к оптимальному, если того захотел пользователь
     unsigned curDeg = func->firstDeg();
-    if (curDeg > n){
-	return 0.0;
-    }
+    if (curDeg > n) return 0.0;
     double term = func->firstTerm(x);
     double sum = term;
     while(curDeg + 2 <= n){

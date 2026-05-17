@@ -19,16 +19,18 @@ public:
     // Значение функции в заданной точке из сmath
     virtual double exactValue(double x) const=0;
 
+
+    // Легаси из прошлой версииф
     //static double factorial(unsigned n); // перегружаться в наследниках не будет, поэтому не virtual.
+
+    //static const unsigned MAX_EXACT_FACTORIAL = 20;
+
+    //static const unsigned MAX_FACTORIAL = 170;
 
     // вычисление n-ого члена в разложении Маклорена - своего для каждой функции, поэтому virtual=0
     //virtual double maclaurinTerm(unsigned n, double x) const = 0; //
 
     virtual double maxDerivative(unsigned n, double x) const = 0; // вычисляет максимальную производную на отрезке
-
-    //static const unsigned MAX_EXACT_FACTORIAL = 20;
-
-    //static const unsigned MAX_FACTORIAL = 170;
     
     //будет приводить аргументы тригонометрических функций к [-pi, pi]
     virtual double prepArg(double x) const;
