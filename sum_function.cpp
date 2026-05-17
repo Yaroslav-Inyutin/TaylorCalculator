@@ -1,25 +1,24 @@
 // sum_function.cpp
 #include "sum_function.hpp"
 #include <cmath>
+#include <memory>
 
 SumFunction::SumFunction() : TaylorFunction(1.0) {}
 
-SumFunction::~SumFunction() {
-    for (auto& term : terms) {
-        delete term.function;  // ← Было term.first
-    }
-    terms.clear();
-}
+SumFunction::~SumFunction() = default;
 
-void SumFunction::addTerm(TaylorFunction* term, double coefficient) {
+void SumFunction::addTerm(std::shared_ptr<TaylorFunction> term, double coefficient) {
     // Создаём структуру Term через конструктор
-    terms.push_back(Term(term, coefficient));
+    terms.emplace_back(Term(term, coefficient)); // emplace чуть эффективнее push
 }
-
+SumFunction::SumFunction(std::shared_ptr<TaylorFunction> term, double coefficient) : TaylorFunction(1.0){
+    // конструктор, который сразу закидывает один объект
+    addTerm(term, coefficient);
+}
 double SumFunction::exactValue(double x) const {
     double sum = 0.0;
     for (const auto& term : terms) {
-        // укоэффициент * значение функции
+        // коэффициент * значение функции
         sum += term.coefficient * term.function->exactValue(x);
     }
     return sum;
