@@ -26,4 +26,8 @@ public:
     // Перегруженные методы базового класса
     virtual double exactValue(double x) const override;
     virtual double maxDerivative(unsigned n, double x) const override;
+    
+    double firstTerm(double x) const override;
+    unsigned int firstDeg() const override;
+    double nextTerm(double prevTerm, unsigned prevN, double x) const override;
 };

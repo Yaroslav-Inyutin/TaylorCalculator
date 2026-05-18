@@ -31,3 +31,12 @@ double SumFunction::maxDerivative(unsigned n, double x) const {
     }
     return sum;
 }
+double SumFunction::firstTerm(double x) const {
+    return 0.0;
+}
+unsigned SumFunction::firstDeg() const {
+    return 0;
+}
+double SumFunction::nextTerm(double prevTerm, unsigned prevN, double x) const{
+    return 0.0;
+}

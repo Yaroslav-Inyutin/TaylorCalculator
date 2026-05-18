@@ -2,7 +2,6 @@
 #include <iostream>
 #include <cmath>
 using std::pow, std::abs, std::min, std::numbers::pi;
-double pi = std::numbers::pi;
 SinFunction::SinFunction(double k, double power, double outerCoefficient, bool useReduction) : TrigonometricFunction(k, power, outerCoefficient, useReduction) {}
 SinFunction::SinFunction(double k, double power, double outerCoefficient) : TrigonometricFunction(k, power, outerCoefficient) {}
 SinFunction::~SinFunction(){}

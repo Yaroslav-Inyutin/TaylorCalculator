@@ -44,7 +44,7 @@ shared_ptr<TaylorFunction> FunctionFactory::parsePart(const std::string& part) {
 
 
     // Ищем знак в начале слагаемого, если есть
-    int start=-1;
+    size_t start=-1;
     double sign = 1.0;
     if(part[0] == '-'){
         start=0;
@@ -53,7 +53,7 @@ shared_ptr<TaylorFunction> FunctionFactory::parsePart(const std::string& part) {
     else if(part[0] == '+'){
         start=0;
     }
-    start++; // если знак есть в начале, то start=1. если не(т, 0
+    start++; // если знак есть в начале, то start=1. если нет, 0
 
 
     // Ищем, в какой x степени, если есть. Делаем это перед парсингом внещнего коэффициента, потому что хотим узнать 
@@ -96,9 +96,9 @@ shared_ptr<TaylorFunction> FunctionFactory::parsePart(const std::string& part) {
     }
 
 
-    // Достаём название функций и их внутренность
-    size_t funcStart = std::max(powerEnd, mulPos, start)+1; // x или коэффициента может просто не быть, функции тогда вернут 0
-
+    // Достаём точку начала функции
+    size_t funcStart = std::max(powerEnd, mulPos); // x или коэффициента может просто не быть, функции тогда вернут 0
+    funcStart = std::max(funcStart, start)+1;
 
     // Теперь извлекаем имя функции и содержимое скобок:
     string funcName = part.substr(funcStart, openParen - funcStart - 1); //
@@ -150,9 +150,9 @@ shared_ptr<TaylorFunction> FunctionFactory::createFunction(const string& funcNam
     if (funcName == "exp") {
         return make_shared<ExpFunction>(k, power, outerCoefficient);
     }
-    if (funcName == "pow") {
-        return make_shared<PowerFunction>(k, power, outerCoefficient);
-    }
+    // if (funcName == "pow") {
+    //     return make_shared<PowerFunction>(k, power, outerCoefficient);
+    // }
     if (funcName == "ln") {
         return make_shared<LnFunction>(k, power, outerCoefficient);
     }
