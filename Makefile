@@ -1,17 +1,42 @@
 .PHONY: all clean install uninstall
 CC = g++
 CFLAGS = -std=c++20 -c
-all: taylorCalculator
+
+QTFLAGS = `pkg-config --cflags Qt6Widgets`
+QTLIBS  = `pkg-config --libs Qt6Widgets`
+
+all: taylorCalculator guiTaylorCalculator
 
 clean: 
 	rm -f *.o
 	rm -f taylorCalculator
+	rm -f guiTaylorCalculator
+	rm -f moc_mainwindow.cpp
 
 install:
 	install ./taylorCalculator /usr/local/bin
 
 uninstall:
 	rm /usr/local/bin/taylorCalculator
+
+# GUI ВЕРСИЯ
+
+guiTaylorCalculator: gui_main.o mainwindow.o moc_mainwindow.o taylor_controller.o taylor_function.o function_factory.o calculator.o sin.o cos.o ln.o pow.o exp.o sh.o ch.o trigonometric_function.o
+	$(CC) gui_main.o mainwindow.o moc_mainwindow.o taylor_controller.o taylor_function.o function_factory.o calculator.o sin.o cos.o ln.o pow.o exp.o sh.o ch.o trigonometric_function.o -o guiTaylorCalculator $(QTLIBS)
+
+gui_main.o: gui_main.cpp gui/mainwindow.hpp
+	$(CC) $(CFLAGS) $(QTFLAGS) gui_main.cpp -o gui_main.o
+
+mainwindow.o: gui/mainwindow.cpp gui/mainwindow.hpp taylor_controller.hpp
+	$(CC) $(CFLAGS) $(QTFLAGS) gui/mainwindow.cpp -o mainwindow.o
+
+moc_mainwindow.o: moc_mainwindow.cpp
+	$(CC) $(CFLAGS) $(QTFLAGS) moc_mainwindow.cpp -o moc_mainwindow.o
+
+moc_mainwindow.cpp: gui/mainwindow.hpp
+	/usr/lib/qt6/libexec/moc gui/mainwindow.hpp -o moc_mainwindow.cpp
+
+# КОНЕЦ GUI
 
 taylorCalculator: main.o taylor_controller.o taylor_function.o function_factory.o calculator.o sin.o cos.o ln.o pow.o exp.o sh.o ch.o trigonometric_function.o sum_function.o
 	$(CC) -std=c++20 main.o taylor_controller.o taylor_function.o function_factory.o calculator.o sin.o cos.o ln.o pow.o exp.o sh.o ch.o trigonometric_function.o sum_function.o -o taylorCalculator
@@ -54,5 +79,6 @@ sh.o: sh.cpp sh.hpp taylor_function.hpp
 
 ch.o: ch.cpp ch.hpp taylor_function.hpp
 	$(CC) $(CFLAGS) ch.cpp -o ch.o
+  
 sum_function.o: sum_function.cpp sum_function.hpp
 	$(CC) $(CFLAGS) sum_function.cpp -o sum_function.o

@@ -105,7 +105,7 @@ int main() {
                 cout << "Введите точку, в которой функция аппроксимируется: ";
                 double x = readDouble();
 
-                controller.runRemainder(input, useReduction, x, n);
+                controller.runRemainder(input, useReduction, x, n, cout);
             }
             if(a=='n'){
                 cout << "Введите требуемую точность: ";
@@ -114,7 +114,7 @@ int main() {
                 cout << "Введите точку, в которой функция аппроксимируется: ";
                 double x = readDouble();
                 
-                controller.runDegree(input, useReduction, x, acc);
+                controller.runDegree(input, useReduction, x, acc, cout);
             }
             if (a=='x'){
                 cout << "Введите требуемую точность: ";
@@ -126,7 +126,7 @@ int main() {
                 cout << "Введите порядок разложения (по умолчанию: 169): ";
                 unsigned n = readUnsigned();
                 
-                controller.runInterval(input, useReduction, dx, acc, n);
+                controller.runInterval(input, useReduction, dx, acc, n, cout);
             }
             break;  // Выход из цикла после успеха
         }

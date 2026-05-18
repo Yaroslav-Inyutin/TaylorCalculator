@@ -8,7 +8,11 @@
 #include <QLabel>
 #include <QString>
 #include <QMessageBox>
-#include "taylor_controller.hpp"
+#include "../taylor_controller.hpp"
+#include <sstream>
+
+std::ostringstream ss;
+
 MainWindow::MainWindow(QWidget* parent) : QMainWindow(parent) {
     controller = new TaylorController();	      
     auto* central = new QWidget(this);	
@@ -65,16 +69,19 @@ void MainWindow::onCalculate() {
       	if (mode == "r") {						        
 		double x = xInput->text().toDouble();			
 		unsigned n = nInput->text().toUInt();
-		controller->runRemainder(func, reduction, x, n);						
+		controller->runRemainder(func, reduction, x, n, ss);
+		output->setText(QString::fromStdString(ss.str()));		
 	} else if (mode == "n") {			
 		double x = xInput->text().toDouble();				
 		double acc = accInput->text().toDouble();							
-		controller->runDegree(func, reduction, x, acc);							
+		controller->runDegree(func, reduction, x, acc, ss);
+		output->setText(QString::fromStdString(ss.str()));    
 	} else if (mode == "x") {		
 		double acc = accInput->text().toDouble();				
 		double dx = dxInput->text().toDouble();							
 		unsigned n = nInput->text().toUInt();		
-		controller->runInterval(func, reduction, dx, acc, n);						
+		controller->runInterval(func, reduction, dx, acc, n, ss);
+		output->setText(QString::fromStdString(ss.str()));    
 	}
     } catch (const std::exception& e) {QMessageBox::critical(this, "Error", e.what());}
 }
