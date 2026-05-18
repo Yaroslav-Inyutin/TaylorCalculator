@@ -3,7 +3,8 @@
 
 class CosFunction : public TrigonometricFunction {
 public:
-    explicit CosFunction(double k = 1.0, bool useReduction = true);
+    explicit CosFunction(double k, double power, double outerCoefficient, bool useReduction);
+    explicit CosFunction(double k, double power, double outerCoefficient);
     ~CosFunction() override;
 
     double exactValue(double x) const override;

@@ -4,7 +4,8 @@
 
 class SinFunction : public TrigonometricFunction { 
 public:
-    explicit SinFunction(double k = 1.0, bool useReduction = true);
+    explicit SinFunction(double k, double power, double outerCoefficient, bool useReduction);
+    explicit SinFunction(double k, double power, double outerCoefficient);
     ~SinFunction() override;
     
     double exactValue(double x) const override;

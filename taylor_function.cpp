@@ -2,7 +2,8 @@
 #include <cmath>
 #include <iostream>
 
-TaylorFunction::TaylorFunction(double k) : coefficient(k) {}
+TaylorFunction::TaylorFunction(double k, double power, double outerCoefficient) 
+			: coefficient(k), power(power), outerCoefficient(outerCoefficient) {}
 
 TaylorFunction::~TaylorFunction() = default;
 

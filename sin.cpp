@@ -2,8 +2,8 @@
 #include <iostream>
 #include <cmath>
 using std::pow, std::abs, std::min, std::numbers::pi;
-SinFunction::SinFunction(double k, bool useReduction) : TrigonometricFunction(k, useReduction) {}
-
+SinFunction::SinFunction(double k, double power, double outerCoefficient, bool useReduction) : TrigonometricFunction(k, power, outerCoefficient, useReduction) {}
+SinFunction::SinFunction(double k, double power, double outerCoefficient) : TrigonometricFunction(k, power, outerCoefficient) {}
 SinFunction::~SinFunction(){}
 
 double SinFunction::exactValue(double x) const {
@@ -28,7 +28,7 @@ double SinFunction::maxDerivative(unsigned n, double x) const {
     double absX = abs(x);
     
     // Нечётные производные: содержат cos, его максимум = 1.
-    // Это, кстати, плохо. Возможно, следует бросать варнинг пользователю, чтобы он 
+    // Это, кстати, плохо. Возможно, следует бросать варнинг пользователю, чтобы он выбрал аргумент на + или - 1 больше
     if (n % 2 == 1) {
         return pow(k, n);
     }

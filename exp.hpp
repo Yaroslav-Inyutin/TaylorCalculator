@@ -3,7 +3,7 @@
 
 class ExpFunction : public TaylorFunction {
 public:
-    explicit ExpFunction(double k = 1.0);
+    explicit ExpFunction(double k, double power, double outerCoefficient);
     ~ExpFunction() override;
 
     double exactValue(double x) const override;

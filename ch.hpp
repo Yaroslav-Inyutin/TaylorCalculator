@@ -3,7 +3,7 @@
 
 class ChFunction : public TaylorFunction {
 public:
-    explicit ChFunction(double k = 1.0);
+    explicit ChFunction(double k, double power, double outerCoefficient);
     ~ChFunction() override;
     double exactValue(double x) const override;
     double firstTerm(double x) const override;

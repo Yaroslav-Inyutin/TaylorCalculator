@@ -3,7 +3,7 @@
 #include <cmath>
 using std::pow, std::exp, std::abs;
 
-ExpFunction::ExpFunction(double k) : TaylorFunction(k) {}
+ExpFunction::ExpFunction(double k, double power, double outerCoefficient) : TaylorFunction(k, power, outerCoefficient) {}
 ExpFunction::~ExpFunction() {}
 
 double ExpFunction::exactValue(double x) const {

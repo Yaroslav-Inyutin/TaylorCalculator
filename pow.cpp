@@ -2,7 +2,7 @@
 #include <cmath>
 #include <iostream>
 
-PowerFunction::PowerFunction(double alpha, double k) : TaylorFunction(k), alpha_(alpha) {}
+PowerFunction::PowerFunction(double alpha, double k, double power, double outerCoefficient) : TaylorFunction(k, power, outerCoefficient), alpha_(alpha) {}
 
 double PowerFunction::exactValue(double x) const {
     return std::pow(1.0 + x, alpha_);

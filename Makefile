@@ -38,8 +38,8 @@ moc_mainwindow.cpp: gui/mainwindow.hpp
 
 # КОНЕЦ GUI
 
-taylorCalculator: main.o taylor_controller.o taylor_function.o function_factory.o calculator.o sin.o cos.o ln.o pow.o exp.o sh.o ch.o trigonometric_function.o
-	$(CC) -std=c++20 main.o taylor_controller.o taylor_function.o function_factory.o calculator.o sin.o cos.o ln.o pow.o exp.o sh.o ch.o trigonometric_function.o -o taylorCalculator
+taylorCalculator: main.o taylor_controller.o taylor_function.o function_factory.o calculator.o sin.o cos.o ln.o pow.o exp.o sh.o ch.o trigonometric_function.o sum_function.o
+	$(CC) -std=c++20 main.o taylor_controller.o taylor_function.o function_factory.o calculator.o sin.o cos.o ln.o pow.o exp.o sh.o ch.o trigonometric_function.o sum_function.o -o taylorCalculator
 
 main.o: main.cpp function_factory.hpp calculator.hpp taylor_controller.hpp
 	$(CC) $(CFLAGS) main.cpp -o main.o
@@ -79,3 +79,6 @@ sh.o: sh.cpp sh.hpp taylor_function.hpp
 
 ch.o: ch.cpp ch.hpp taylor_function.hpp
 	$(CC) $(CFLAGS) ch.cpp -o ch.o
+  
+sum_function.o: sum_function.cpp sum_function.hpp
+	$(CC) $(CFLAGS) sum_function.cpp -o sum_function.o

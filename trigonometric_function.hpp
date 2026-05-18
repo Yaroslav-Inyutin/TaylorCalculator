@@ -3,9 +3,10 @@
 
 class TrigonometricFunction : public TaylorFunction{
 protected:
-    bool useReduction_;
+    bool useReduction_ = false;
 public:
-    TrigonometricFunction(double k, bool useReduction = true);
+    TrigonometricFunction(double k, double power, double outerCoefficient, bool useReduction);
+    TrigonometricFunction(double k, double power, double outerCoefficient);
     double prepArg(double x) const override;
     bool isTrigonometric() const override;
 };
