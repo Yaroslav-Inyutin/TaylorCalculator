@@ -4,7 +4,7 @@
 static constexpr unsigned MAX_DEGREE = 200;
 #define THRESHOLD 1e-200
 
-Calculator::Calculator(std::shared_ptr<TaylorFunction> func) : func(func) {}
+Calculator::Calculator(std::shared_ptr<SumFunction> func) : func(func) {}
 
 Calculator::~Calculator(){}
 
@@ -14,24 +14,28 @@ double Calculator::lagrangeRemainder(double x, unsigned n) const {
 }
 
 double Calculator::approximation(double x, unsigned n) const{
-    x = func->prepArg(x); // приводит аргумент к оптимальному, если того захотел пользователь
-    unsigned curDeg = func->firstDeg();
-    if (curDeg > n) return 0.0;
-    double term = func->firstTerm(x);
-    double sum = term;
-    while(curDeg + 2 <= n){
-	term = func->nextTerm(term, curDeg, x);
-	curDeg+= 2;
-	sum += term;
+    double approx=0.0;
+    for(const auto& elem : func->terms){
+        x = elem->prepArg(x); // приводит аргумент к оптимальному, если того захотел пользователь
+        unsigned curDeg = elem->firstDeg();
+        if (curDeg > n) return 0.0;
+        double term = elem->firstTerm(x);
+        double sum = term;
+        while(curDeg + 1 <= n){
+            term = func->nextTerm(term, curDeg, x);
+            curDeg+= 1; // тут надо подумать что делать с тригонометрическими функциями, там у них должна быть двойка, вроде как
+            sum += term;
+            }
+        approx+=sum;
     }
-    return sum;
+    return approx;
 }
 
 double Calculator::compare_with_exactValue(double x, unsigned n) const{
     return std::abs(func->exactValue(x)-approximation(x, n));
 }
 
-void Calculator::setNewfunc(std::shared_ptr<TaylorFunction> func){
+void Calculator::setNewfunc(std::shared_ptr<SumFunction> func){
     this->func=func;
 }
 unsigned Calculator::degree(double x, double accuracy) const{

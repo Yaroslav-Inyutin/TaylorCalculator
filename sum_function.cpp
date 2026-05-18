@@ -3,31 +3,31 @@
 #include <cmath>
 #include <memory>
 
-SumFunction::SumFunction() : TaylorFunction(1.0) {}
+SumFunction::SumFunction() : TaylorFunction(1.0, 1.0, 1.0) {}
 
 SumFunction::~SumFunction() = default;
 
-void SumFunction::addTerm(std::shared_ptr<TaylorFunction> term, double coefficient) {
-    // Создаём структуру Term через конструктор
-    terms.emplace_back(Term(term, coefficient)); // emplace чуть эффективнее push
+void SumFunction::addTerm(std::shared_ptr<TaylorFunction> term) {
+    // закидываем функции в вектор
+    terms.emplace_back(term); // emplace чуть эффективнее push
 }
-SumFunction::SumFunction(std::shared_ptr<TaylorFunction> term, double coefficient) : TaylorFunction(1.0){
+SumFunction::SumFunction(std::shared_ptr<TaylorFunction> term) : TaylorFunction(1.0, 1.0, 1.0){
     // конструктор, который сразу закидывает один объект
-    addTerm(term, coefficient);
+    addTerm(term);
 }
 double SumFunction::exactValue(double x) const {
     double sum = 0.0;
     for (const auto& term : terms) {
-        // коэффициент * значение функции
-        sum += term.coefficient * term.function->exactValue(x);
+        // коэффициент * x^a * значение функции
+        sum += term->getOuterCoefficient() * std::pow(x, term->getPower()) * term->exactValue(x);
     }
     return sum;
 }
 
-double SumFunction::maxDerivative(unsigned n, double intervalEnd) const {
+double SumFunction::maxDerivative(unsigned n, double x) const {
     double sum = 0.0;
     for (const auto& term : terms) {
-        sum += term.coefficient * term.function->maxDerivative(n, intervalEnd);
+        sum += term->getOuterCoefficient() * std::pow(x, term->getPower()) * term->maxDerivative(n, x);
     }
     return sum;
 }

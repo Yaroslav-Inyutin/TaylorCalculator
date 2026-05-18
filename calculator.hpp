@@ -1,5 +1,5 @@
 #pragma once
-#include "taylor_function.hpp"
+#include "sum_function.hpp"
 #include <memory>
 #include <iostream>
 
@@ -9,12 +9,11 @@ struct borders{
         std::cout << "Интервал заданной точности разложения: (" << l << "; " << r << ")" << std::endl;
     }
 };
-// этот класс, вроде бы, ничего не хранит, так что писать тут консты в суффиксах даже немного избыточно.
-// не знаю, как лучше
+
 class Calculator {
 private:
 
-    std::shared_ptr<TaylorFunction> func;
+    std::shared_ptr<SumFunction> func;
     
     double right_intervalEnd(double dx, double accuracy, unsigned n) const; // вычисляем максимальный x, на котором реализуется данная точность при заданном порядке. 
     //точность этого интервала - dx. 
@@ -27,24 +26,23 @@ private:
 
 public:
 
-    Calculator(std::shared_ptr<TaylorFunction> func);
+    Calculator(std::shared_ptr<SumFunction> func);
     ~Calculator();
     
-    void setNewfunc(std::shared_ptr<TaylorFunction> func);
+    void setNewfunc(std::shared_ptr<SumFunction> func);
 
     // аппроксимировать функцию по Тейлору
-    double approximation(double x, unsigned n) const; // писать тут конст или нет - зависит от того, хотим ли мы хранить аппроксимацию.
-    //это эффективнее по времени исполнения, но может быть немного бесполезно и геморно в воркфлоу: там всё равно каждвя функция пересчитается несколько раз
+    double approximation(double x, unsigned n) const; 
 
     // сравнить аппроксимацию с cmath
-    double compare_with_exactValue(double x, unsigned n) const; // не перегружаются, не virtual. тоже не const, потому что использует getApproximation
-    
+    double compare_with_exactValue(double x, unsigned n) const; 
+
     // вычислить остаточный член в форме Лагранжа
-    double lagrangeRemainder(double x, unsigned n) const; // тоже не будет перегружаться
+    double lagrangeRemainder(double x, unsigned n) const; 
 
     unsigned degree(double x, double accuracy) const; // вычисляем порядок разложения по заданной точности
 
-    borders interval(double dx, double accuracy, unsigned n) const;
+    borders interval(double dx, double accuracy, unsigned n) const; // находим интервал, где соблюдается точносnm
     
     borders interval(double dx, double accuracy) const;
 };

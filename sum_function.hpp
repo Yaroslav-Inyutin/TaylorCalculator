@@ -1,26 +1,18 @@
-// класс, который будет хранить слагаемые в нашей сумме
+// класс, который будет хранить слагаемые в нашей сумме. Он "маскируется" под обычную функцию
 #pragma once
 #include "taylor_function.hpp"
 #include <vector>
 #include <string>
 #include <memory>
 
-// Структура для хранения слагаемого: функция + коэффициент
-struct Term { 
-    std::shared_ptr<TaylorFunction> function;   // Указатель на функцию (sin, cos, exp...)
-    double coefficient;         // Коэффициент перед функцией (например, 3 в 3*sin(x))
-    
-    // Конструктор со списком инициализации
-    Term(std::shared_ptr<TaylorFunction> func, double coeff) : function(func), coefficient(coeff) {}
-};
-
 class SumFunction : public TaylorFunction {
 private:
-    std::vector<Term> terms;  // вектор слагаемых
 
 public:
+    std::vector<std::shared_ptr<TaylorFunction>> terms;  // вектор слагаемых
+    
     SumFunction();
-    SumFunction(std::shared_ptr<TaylorFunction> term, double coefficient);
+    SumFunction(std::shared_ptr<TaylorFunction> term);
     virtual ~SumFunction() override;
     
     // Копирование БЕЗОПАСНО (shared_ptr считает ссылки)
@@ -29,9 +21,9 @@ public:
     SumFunction& operator=(const SumFunction& other) = delete;
     
     // Добавить слагаемое
-    void addTerm(std::shared_ptr<TaylorFunction> term, double coefficient);
+    void addTerm(std::shared_ptr<TaylorFunction> term);
     
     // Перегруженные методы базового класса
     virtual double exactValue(double x) const override;
-    virtual double maxDerivative(unsigned n, double intervalEnd) const override;
+    virtual double maxDerivative(unsigned n, double x) const override;
 };
