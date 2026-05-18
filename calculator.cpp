@@ -1,7 +1,6 @@
 #include <cmath>
 #include <iostream>
 #include "calculator.hpp"
-#include "exceptions.hpp"
 static constexpr unsigned MAX_DEGREE = 200;
 #define THRESHOLD 1e-200
 
@@ -17,6 +16,8 @@ double Calculator::lagrangeRemainder(double x, unsigned n) const {
 double Calculator::approximation(double x, unsigned n) const{
     double approx=0.0;
     for(const auto& elem : func->terms){
+        if(x==0 && elem->getPower()<0) 
+
         x = elem->prepArg(x); // приводит аргумент к оптимальному, если того захотел пользователь
         unsigned curDeg = elem->firstDeg();
         if (curDeg > n) return 0.0;
@@ -47,10 +48,10 @@ unsigned Calculator::degree(double x, double accuracy) const{
         cur_acc = lagrangeRemainder(x, deg);
         if(cur_acc - accuracy <= THRESHOLD) return deg;
     }
-    throw accuracy_error("Не удалось достигнуть требуемой точности. Снизьте точность или приблизьте x к нулю."); // тоже позже перепишу какой тут эррор
+    throw accuracy_error("Не удалось достигнуть требуемой точности. Снизьте точность или приблизьте x к нулю."); 
 }
 double Calculator::right_intervalEnd(double dx, double accuracy, unsigned n) const{
-    if(dx < THRESHOLD) throw accuracy_error("Задана слишком высокая точность вычисления границы интервала. Снизьте точность до THRESHOLD"); // тоже позже перепишу какой тут эррор
+    if(dx < 1e-10) throw accuracy_error("Задана слишком высокая точность вычисления границы интервала. Снизьте точность до 10^-10"); 
     double border=0.0;
     for(; lagrangeRemainder(border, n)<=accuracy; border+=dx){};
     return border;
@@ -59,7 +60,7 @@ double Calculator::right_intervalEnd(double dx, double accuracy) const{
     return right_intervalEnd(dx, accuracy, MAX_DEGREE);
 }
 double Calculator::left_intervalEnd(double dx, double accuracy, unsigned n) const{
-    if(dx < THRESHOLD) throw accuracy_error("Задана слишком высокая точность вычисления границы интервала. Снизьте точность до THRESHOLD"); // тоже позже перепишу какой тут эррор
+    if(dx < 1e-10) throw accuracy_error("Задана слишком высокая точность вычисления границы интервала. Снизьте точность до 10^-10");
     double border=0.0;
     for(; lagrangeRemainder(border, n)<=accuracy; border-=dx){};
     return border;

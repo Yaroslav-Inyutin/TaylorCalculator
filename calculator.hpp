@@ -2,6 +2,11 @@
 #include "sum_function.hpp"
 #include <memory>
 #include <iostream>
+#include <stdexcept>
+class accuracy_error : public std::runtime_error {
+public:
+    accuracy_error(const std::string& what) : std::runtime_error(what) {};
+};
 
 struct borders{
     double l,r;

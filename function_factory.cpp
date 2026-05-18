@@ -34,13 +34,13 @@ shared_ptr<TaylorFunction> FunctionFactory::parsePart(const std::string& part) {
 
     size_t openParen = part.find('(');
     if (openParen == string::npos) {
-        throw std::invalid_argument("Отсутствует открывающая скобка '('");
+        throw std::invalid_argument("Отсутствует открывающая скобка '('\nЕсли на самом деле она есть - скорее всего, вы ввели неправильный формат функции.");
     }
 
     size_t closeParen = part.rfind(')');   // поиск с конца: эффективнее
     if (closeParen == string::npos) {
         // std::cout << "Бросаю исключение на закрывающую скобку" << std::endl;
-        throw std::invalid_argument("Отсутствует закрывающая скобка ')'");
+        throw std::invalid_argument("Отсутствует закрывающая скобка ')'\nЕсли на самом деле она есть - скорее всего, вы ввели неправильный формат функции.");
     }
 
 
@@ -78,7 +78,7 @@ shared_ptr<TaylorFunction> FunctionFactory::parsePart(const std::string& part) {
                 string powerStr = part.substr(powerStart, powerEnd - powerStart); // убран лишний -1
                 if(powerStr.size() != 0) power = std::stod(powerStr);  // строка → double
             }
-            else throw std::invalid_argument("Неправильно введена функция"); // если нет * после степени - это обязательно
+            else throw std::invalid_argument("Неправильно введена функция. Не хватает * после x^a."); // если нет * после степени - это обязательно
         }
         else{
             power=1.0;
@@ -151,7 +151,7 @@ vector<string> FunctionFactory::splitByOperators(const string& expr) {
 double FunctionFactory::parseCoefficient(const std::string& content){
     double k = 1.0;
     size_t xPos = content.find('x'); //ищем x в содержимом функции. возможно стоит добавить другие имена переменных
-    if (xPos == string::npos) throw std::runtime_error("Переменная функции - не x"); // бросаем исключения если не нашли
+    if (xPos == string::npos) throw std::invalid_argument("Переменная функции - не x"); // бросаем исключения если не нашли
     // если нашли,то извлекаем численную часть
     string numPart = content.substr(0, xPos);
     if(numPart.size() == 0) return k; // если ничего нет, то возвращаем единичку

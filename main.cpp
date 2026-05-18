@@ -5,7 +5,6 @@
 #include "function_factory.hpp"
 #include "calculator.hpp"
 #include "taylor_controller.hpp"
-#include "exceptions.hpp"
 
 using std::cout, std::cin, std::endl, std::cerr;
 
@@ -56,7 +55,7 @@ int main() {
         // хотя, какая разница
 
         try {
-	    cout << "Введите функцию: ";
+	    cout << "Введите функцию вида 3*x^5*exp(4x) + 7*ch(6x) - 9^x^2*sin(x).\nКоличество пробелов не важно, но каждый множитель вне скобок должен отделяться символами *\nАргументы функций записываются в скобках, * после коэффициента не ставится.\nПоддерживаются функции: sin, cos, sh, ch, exp (pow и ln на стадии разработки).\n";
 	    std::getline(cin, input);
 	    // Пропускаем пустые вводы
 	    if (input.empty()) {
@@ -134,17 +133,10 @@ int main() {
         catch (const std::invalid_argument& e) {
             // Ошибка формата: пользователь ввёл что-то не то
             cerr << e.what() << endl;
-            cerr << "Введите другую функцию или исправьте формат ввода.\n";
             // Цикл продолжится, cin чистить не нужно
         }
         catch(const accuracy_error& e){
-            cerr << e.what() << endl;
-        }
-        catch (const std::runtime_error& e) {
-            // Пока что это только неправильное имя переменной. Но мы поменяем этот класс, унаследуемся.
-            // Кстати, можно сделать ещё другие разрешённые имена, типа y, z, t
-            cerr << e.what() << endl;
-            cerr << "Попробуйте другую функцию:\n";  
+            cerr << std::scientific << e.what() << endl;
         }
         catch (const std::exception& e) {
             // Любой другой исключительный случай — на всякий пожарный
