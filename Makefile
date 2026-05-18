@@ -21,8 +21,8 @@ uninstall:
 
 # GUI ВЕРСИЯ
 
-guiTaylorCalculator: gui_main.o mainwindow.o moc_mainwindow.o taylor_controller.o taylor_function.o function_factory.o calculator.o sin.o cos.o ln.o pow.o exp.o sh.o ch.o trigonometric_function.o
-	$(CC) gui_main.o mainwindow.o moc_mainwindow.o taylor_controller.o taylor_function.o function_factory.o calculator.o sin.o cos.o ln.o pow.o exp.o sh.o ch.o trigonometric_function.o -o guiTaylorCalculator $(QTLIBS)
+guiTaylorCalculator: gui_main.o sum_function.o mainwindow.o moc_mainwindow.o taylor_controller.o taylor_function.o function_factory.o calculator.o sin.o cos.o ln.o pow.o exp.o sh.o ch.o trigonometric_function.o
+	$(CC) gui_main.o sum_function.o mainwindow.o moc_mainwindow.o taylor_controller.o taylor_function.o function_factory.o calculator.o sin.o cos.o ln.o pow.o exp.o sh.o ch.o trigonometric_function.o -o guiTaylorCalculator $(QTLIBS)
 
 gui_main.o: gui_main.cpp gui/mainwindow.hpp
 	$(CC) $(CFLAGS) $(QTFLAGS) gui_main.cpp -o gui_main.o
