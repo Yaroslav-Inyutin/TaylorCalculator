@@ -39,19 +39,20 @@ shared_ptr<TaylorFunction> FunctionFactory::parsePart(const std::string& part) {
 
     size_t closeParen = part.rfind(')');   // поиск с конца: эффективнее
     if (closeParen == string::npos) {
+        // std::cout << "Бросаю исключение на закрывающую скобку" << std::endl;
         throw std::invalid_argument("Отсутствует закрывающая скобка ')'");
     }
 
 
     // Ищем знак в начале слагаемого, если есть
-    size_t start=-1;
+    size_t start = -1;
     double sign = 1.0;
     if(part[0] == '-'){
-        start=0;
-        sign=-1.0;
+        start = 0;
+        sign = -1.0;
     }
     else if(part[0] == '+'){
-        start=0;
+        start = 0;
     }
     start++; // если знак есть в начале, то start=1. если нет, 0
 
@@ -59,12 +60,14 @@ shared_ptr<TaylorFunction> FunctionFactory::parsePart(const std::string& part) {
     // Ищем, в какой x степени, если есть. Делаем это перед парсингом внещнего коэффициента, потому что хотим узнать 
     // положение звёздочки у степени
     double power = 0.0;
-
+    bool xExists = false;
     size_t xPos = part.find('x', start);
-    size_t powerEnd =0; // индекс звёздочки, если она есть. если её нет, то просто 0
+    size_t powerEnd = 0; // индекс звёздочки, если она есть. если её нет, то просто 0
 
-    if(xPos > openParen) xPos=0; // тут мы также обрабатываем случай ненахождения x вовсе, потому что npos - это максимлаьный unsigned
+    if(xPos > openParen || part[xPos+1] == 'p') xPos = 0; // тут мы также обрабатываем случай ненахождения x вовсе, 
+    // потому что npos - это максимлаьный unsigned. Кроме того, тут же надо проверить, что этот x не часть фразы exp
     else{
+        xExists=true;
         std::cout << "Найден x перед функцией" << std::endl;
         // Нашли "x" перед функцией, например "x^2*sin(5x)"
 
@@ -72,36 +75,44 @@ shared_ptr<TaylorFunction> FunctionFactory::parsePart(const std::string& part) {
             size_t powerStart = xPos + 2;  // символ сразу после "x^"
             powerEnd = part.find('*', powerStart);
             if (powerEnd != string::npos) {
-                string powerStr = part.substr(powerStart, powerEnd - powerStart - 1);
+                string powerStr = part.substr(powerStart, powerEnd - powerStart); // убран лишний -1
                 if(powerStr.size() != 0) power = std::stod(powerStr);  // строка → double
             }
             else throw std::invalid_argument("Неправильно введена функция"); // если нет * после степени - это обязательно
         }
-        else throw std::invalid_argument("Неправильно введена функция"); // если нет ^ после x - это обязательно
+        else{
+            power=1.0;
+            powerEnd=xPos+1;
+        }
     }
 
 
     // Ищем внешний коэффициент, если есть 3*x^2*sin(5x). Тоже для парсинга приходится делать звёздочку обязательной, 
     // иначе непонятно как разделять 
     double outerCoefficient;
+    bool coeffExists=false;
     size_t mulPos = part.find('*', start);
-    if(mulPos = string::npos || mulPos == powerEnd){
-        mulPos=0;
-        outerCoefficient=1.0;
+    if(mulPos == string::npos || mulPos == powerEnd){
+        mulPos = 0;
+        outerCoefficient = 1.0;
     } // если звёздочек нет, или есть только у икса
     // если powerEnd == 0, то никакого x нет. Это нам подходит, в начале * быть не может
     else{
-        string coefStr = part.substr(start, mulPos-start);
+        coeffExists=true;
+        string coefStr = part.substr(start, mulPos - start);
         outerCoefficient = std::stod(coefStr);
     }
 
 
     // Достаём точку начала функции
-    size_t funcStart = std::max(powerEnd, mulPos); // x или коэффициента может просто не быть, функции тогда вернут 0
-    funcStart = std::max(funcStart, start)+1;
+    size_t funcStart;
+    if(xExists) funcStart=powerEnd+1;
+    else if(coeffExists) funcStart=mulPos+1;
+    else funcStart=start;
+
 
     // Теперь извлекаем имя функции и содержимое скобок:
-    string funcName = part.substr(funcStart, openParen - funcStart - 1); //
+    string funcName = part.substr(funcStart, openParen - funcStart); // убран лишний -1
     string content = part.substr(openParen + 1, closeParen - openParen - 1);
     
     double k = parseCoefficient(content); // вот здесь всё же удобно использовать функцию
@@ -116,16 +127,23 @@ string FunctionFactory::removeSpaces(const string& expr) { // Убираем п�
 
 vector<string> FunctionFactory::splitByOperators(const string& expr) {
     vector<string> parts;
-    for (size_t i = 0; i < expr.length();) {
+    size_t i = 0;
+    while (i < expr.length()) {
         string current;
-        for(int j=0;; j++, i++){
+        current += expr[i++]; // Нулевой символ (возможно знак) всегда включаем, потом инкрементим i и идём дальше
+        
+        while (i < expr.length()) {
             char c = expr[i];
-            if(!(c == '+' || c== '-') || j==0){
-                current.push_back(c);
+            // Если встретили + или - как разделитель (не первый символ терма)
+            if ((c == '+' || c == '-') && !current.empty()) {
+                break;
             }
-            else break;
+            current += c;
+            i++;
         }
-        parts.push_back(current);
+        if(!current.empty()) {
+            parts.push_back(current);
+        }
     }
     return parts;
 }
@@ -133,14 +151,16 @@ vector<string> FunctionFactory::splitByOperators(const string& expr) {
 double FunctionFactory::parseCoefficient(const std::string& content){
     double k = 1.0;
     size_t xPos = content.find('x'); //ищем x в содержимом функции. возможно стоит добавить другие имена переменных
-    if (xPos == string::npos || xPos < 0) throw std::runtime_error("Переменная функции - не x"); // бросаем исключения если не нашли
+    if (xPos == string::npos) throw std::runtime_error("Переменная функции - не x"); // бросаем исключения если не нашли
     // если нашли,то извлекаем численную часть
     string numPart = content.substr(0, xPos);
-    if(numPart.size()==0) return k; // если ничего нет, то возвращаем единичку
+    if(numPart.size() == 0) return k; // если ничего нет, то возвращаем единичку
     k = std::stod(numPart); // даже если там есть в конце значок умножения типа sin(3*x), stod пофигу на него
     return k;
 }
+
 shared_ptr<TaylorFunction> FunctionFactory::createFunction(const string& funcName, double k, double power, double outerCoefficient) {
+    std::cout << "Имя функции: " << funcName << std::endl;
     if (funcName == "sin") {
         return make_shared<SinFunction>(k, power, outerCoefficient);
     }

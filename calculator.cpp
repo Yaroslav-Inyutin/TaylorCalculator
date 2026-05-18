@@ -1,6 +1,7 @@
 #include <cmath>
 #include <iostream>
 #include "calculator.hpp"
+#include "exceptions.hpp"
 static constexpr unsigned MAX_DEGREE = 200;
 #define THRESHOLD 1e-200
 
@@ -26,7 +27,8 @@ double Calculator::approximation(double x, unsigned n) const{
             curDeg+= 1; // тут надо подумать что делать с тригонометрическими функциями, там у них должна быть двойка, вроде как
             sum += term;
             }
-        approx+=sum;
+        approx+=sum * elem->getOuterCoefficient() * pow(x, elem->getPower());
+        // std::cout << "Аппрокимация : " << approx << std::endl;
     }
     return approx;
 }
@@ -45,10 +47,10 @@ unsigned Calculator::degree(double x, double accuracy) const{
         cur_acc = lagrangeRemainder(x, deg);
         if(cur_acc - accuracy <= THRESHOLD) return deg;
     }
-    throw std::runtime_error("Не удалось достигнуть требуемой точности"); // тоже позже перепишу какой тут эррор
+    throw accuracy_error("Не удалось достигнуть требуемой точности. Снизьте точность или приблизьте x к нулю."); // тоже позже перепишу какой тут эррор
 }
 double Calculator::right_intervalEnd(double dx, double accuracy, unsigned n) const{
-    if(dx < THRESHOLD) throw std::invalid_argument("Слишком высокая точность"); // тоже позже перепишу какой тут эррор
+    if(dx < THRESHOLD) throw accuracy_error("Задана слишком высокая точность вычисления границы интервала. Снизьте точность до THRESHOLD"); // тоже позже перепишу какой тут эррор
     double border=0.0;
     for(; lagrangeRemainder(border, n)<=accuracy; border+=dx){};
     return border;
@@ -57,7 +59,7 @@ double Calculator::right_intervalEnd(double dx, double accuracy) const{
     return right_intervalEnd(dx, accuracy, MAX_DEGREE);
 }
 double Calculator::left_intervalEnd(double dx, double accuracy, unsigned n) const{
-    if(dx < THRESHOLD) throw std::invalid_argument("Слишком высокая точность"); // тоже позже перепишу какой тут эррор
+    if(dx < THRESHOLD) throw accuracy_error("Задана слишком высокая точность вычисления границы интервала. Снизьте точность до THRESHOLD"); // тоже позже перепишу какой тут эррор
     double border=0.0;
     for(; lagrangeRemainder(border, n)<=accuracy; border-=dx){};
     return border;

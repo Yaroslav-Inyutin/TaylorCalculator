@@ -5,6 +5,7 @@
 #include "function_factory.hpp"
 #include "calculator.hpp"
 #include "taylor_controller.hpp"
+#include "exceptions.hpp"
 
 using std::cout, std::cin, std::endl, std::cerr;
 
@@ -135,6 +136,9 @@ int main() {
             cerr << e.what() << endl;
             cerr << "Введите другую функцию или исправьте формат ввода.\n";
             // Цикл продолжится, cin чистить не нужно
+        }
+        catch(const accuracy_error& e){
+            cerr << e.what() << endl;
         }
         catch (const std::runtime_error& e) {
             // Пока что это только неправильное имя переменной. Но мы поменяем этот класс, унаследуемся.
