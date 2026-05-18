@@ -3,7 +3,8 @@
 #include <cmath>
 using std::pow, std::abs;
 
-CosFunction::CosFunction(double k, bool useReduction) : TrigonometricFunction(k, useReduction) {}
+CosFunction::CosFunction(double k, double power, double outerCoefficient, bool useReduction) : TrigonometricFunction(k, power, outerCoefficient, useReduction) {}
+CosFunction::CosFunction(double k, double power, double outerCoefficient) : TrigonometricFunction(k, power, outerCoefficient) {}
 CosFunction::~CosFunction() {}
 
 double CosFunction::exactValue(double x) const {

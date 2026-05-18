@@ -4,14 +4,17 @@
 // надо подумать над эффективностью всего этого. Будем каждый раз создавать новый экземпляр класса? 
 // Кажется, стоит быть умнее: создавать класс для каждого наследника единожды.
 // C другой стороны, тогда каждый из этих классов зависит от своего коэффициента. Тогда надо перезаписывать его каждый раз при чтении функции
+
 class TaylorFunction {
 
 protected:
     double coefficient;  // k в f(kx)
+    double outerCoefficient; // a в a*f(x)
+    double power;  // степень x перед функцией (0 по умолчанию)
 
 public:
     // Конструктор со списком инициализации
-    explicit TaylorFunction(double k);
+    explicit TaylorFunction(double k, double power, double outerCoefficient);
     
     // Виртуальный деструктор 
     virtual ~TaylorFunction()=0;
@@ -45,4 +48,11 @@ public:
     virtual double nextTerm(double prevTerm, unsigned prevN, double x) const = 0;
 
     virtual bool isTrigonometric() const;
+
+    double getPower(){
+        return power;
+    }
+    double getOuterCoefficient(){
+        return outerCoefficient;
+    }
 };

@@ -5,7 +5,7 @@ class PowerFunction : public TaylorFunction {
 private:
     double alpha_; //показатель степени
 public:
-    explicit PowerFunction(double alpha, double k);
+    explicit PowerFunction(double alpha, double k, double power, double outerCoefficient);
     ~PowerFunction() override = default;
     double exactValue(double x) const override;
     double firstTerm(double x) const override;

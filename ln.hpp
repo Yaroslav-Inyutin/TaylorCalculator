@@ -3,7 +3,7 @@
 
 class LnFunction : public TaylorFunction {
 public:
-    explicit LnFunction(double k = 1.0);
+    explicit LnFunction(double k = 1.0, double power, double outerCoefficient);
     ~LnFunction() override;
     double exactValue(double x) const override;
     double firstTerm(double x) const override;

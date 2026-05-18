@@ -3,7 +3,7 @@
 #include <cmath>
 using std::pow, std::sinh, std::abs;
 
-ShFunction::ShFunction(double k) : TaylorFunction(k) {}
+ShFunction::ShFunction(double k, double power, double outerCoefficient) : TaylorFunction(k, power, outerCoefficient) {}
 ShFunction::~ShFunction() {}
 
 double ShFunction::exactValue(double x) const {

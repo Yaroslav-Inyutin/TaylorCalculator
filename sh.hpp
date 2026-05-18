@@ -3,7 +3,7 @@
 
 class ShFunction : public TaylorFunction {
 public:
-    explicit ShFunction(double k = 1.0);
+    explicit ShFunction(double k = 1.0, double power, double outerCoefficient);
     ~ShFunction() override;
     double exactValue(double x) const override;
     double firstTerm(double x) const override;
